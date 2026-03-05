@@ -4,6 +4,7 @@ class ForumTopicModel extends ForumTopic {
   const ForumTopicModel({
     required super.id,
     required super.title,
+    required super.content,
     required super.universityName,
     required super.authorName,
     required super.authorRole,
@@ -11,12 +12,15 @@ class ForumTopicModel extends ForumTopic {
     required super.viewCount,
     required super.lastActivityDate,
     required super.tags,
+    super.isLiked = false,
+    super.isSaved = false,
   });
 
   factory ForumTopicModel.fromJson(Map<String, dynamic> json) {
     return ForumTopicModel(
       id: json['id'] as String,
       title: json['title'] as String,
+      content: json['content'] as String? ?? '',
       universityName: json['universityName'] as String,
       authorName: json['authorName'] as String,
       authorRole: json['authorRole'] as String,
@@ -24,6 +28,8 @@ class ForumTopicModel extends ForumTopic {
       viewCount: json['viewCount'] as int,
       lastActivityDate: DateTime.parse(json['lastActivityDate'] as String),
       tags: List<String>.from(json['tags'] as List),
+      isLiked: json['isLiked'] as bool? ?? false,
+      isSaved: json['isSaved'] as bool? ?? false,
     );
   }
 
@@ -31,6 +37,7 @@ class ForumTopicModel extends ForumTopic {
     return {
       'id': id,
       'title': title,
+      'content': content,
       'universityName': universityName,
       'authorName': authorName,
       'authorRole': authorRole,
@@ -38,6 +45,8 @@ class ForumTopicModel extends ForumTopic {
       'viewCount': viewCount,
       'lastActivityDate': lastActivityDate.toIso8601String(),
       'tags': tags,
+      'isLiked': isLiked,
+      'isSaved': isSaved,
     };
   }
 }

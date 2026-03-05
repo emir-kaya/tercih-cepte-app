@@ -16,7 +16,9 @@ import '../../features/forum/data/datasources/forum_local_datasource.dart';
 import '../../features/forum/data/repositories/forum_repository_impl.dart';
 import '../../features/forum/domain/repositories/forum_repository.dart';
 import '../../features/forum/domain/usecases/get_forum_topics.dart';
+import '../../features/forum/domain/usecases/get_forum_replies.dart';
 import '../../features/forum/presentation/bloc/forum_bloc.dart';
+import '../../features/forum/presentation/bloc/detail/forum_detail_bloc.dart';
 
 // Profile
 import '../../features/profile/data/datasources/profile_local_datasource.dart';
@@ -57,9 +59,11 @@ void registerForumModules() {
   
   // Use Cases
   getIt.registerLazySingleton(() => GetForumTopics(getIt()));
+  getIt.registerLazySingleton(() => GetForumReplies(getIt()));
   
   // BLoC
   getIt.registerFactory(() => ForumBloc(getIt()));
+  getIt.registerFactory(() => ForumDetailBloc(getIt()));
 }
 
 void registerProfileModules() {

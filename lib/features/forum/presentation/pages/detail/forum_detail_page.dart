@@ -1,0 +1,252 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../../../app/di/injector.dart';
+import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_spacing.dart';
+import '../../../../../core/theme/app_typography.dart';
+import '../../../../../core/widgets/app_scaffold.dart';
+import '../../../../../core/widgets/state_widgets/error_state.dart';
+import '../../../../../core/widgets/app_shimmer.dart';
+
+import '../../../domain/entities/forum_topic.dart';
+import '../../bloc/detail/forum_detail_bloc.dart';
+import '../../bloc/detail/forum_detail_event.dart';
+import '../../bloc/detail/forum_detail_state.dart';
+
+import '../../widgets/detail/forum_post_card.dart';
+import '../../widgets/detail/forum_reply_card.dart';
+
+class ForumDetailPage extends StatelessWidget {
+  static const String routePath = 'detail';
+  final ForumTopic topic;
+
+  const ForumDetailPage({
+    super.key,
+    required this.topic,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => getIt<ForumDetailBloc>()..add(LoadForumReplies(topic.id)),
+      child: AppScaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.background,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.textMain, size: 20),
+            onPressed: () => context.pop(),
+          ),
+          title: Text(
+            'Konu Detayı',
+            style: AppTypography.h3.copyWith(fontSize: 18),
+          ),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.more_horiz_rounded, color: AppColors.textMain),
+              onPressed: () {},
+            ),
+          ],
+        ),
+        body: BlocBuilder<ForumDetailBloc, ForumDetailState>(
+          builder: (context, state) {
+            if (state is ForumDetailLoading || state is ForumDetailInitial) {
+              return AppShimmer(
+                child: CustomScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m, vertical: AppSpacing.s),
+                        child: Container(
+                          padding: const EdgeInsets.all(AppSpacing.m),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const ShimmerContainer(width: 40, height: 40, borderRadius: 20),
+                                  const SizedBox(width: AppSpacing.s),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: const [
+                                      ShimmerContainer(width: 120, height: 16),
+                                      SizedBox(height: 4),
+                                      ShimmerContainer(width: 80, height: 12),
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  const ShimmerContainer(width: 50, height: 12),
+                                ],
+                              ),
+                              const SizedBox(height: AppSpacing.m),
+                              const ShimmerContainer(width: double.infinity, height: 24),
+                              const SizedBox(height: AppSpacing.s),
+                              const ShimmerContainer(width: 200, height: 16),
+                              const SizedBox(height: AppSpacing.xl),
+                              const ShimmerContainer(width: double.infinity, height: 14),
+                              const SizedBox(height: 6),
+                              const ShimmerContainer(width: double.infinity, height: 14),
+                              const SizedBox(height: 6),
+                              const ShimmerContainer(width: double.infinity, height: 14),
+                              const SizedBox(height: 6),
+                              const ShimmerContainer(width: 200, height: 14),
+                              const SizedBox(height: AppSpacing.xl),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: const [
+                                      ShimmerContainer(width: 60, height: 24, borderRadius: 12),
+                                      SizedBox(width: AppSpacing.s),
+                                      ShimmerContainer(width: 80, height: 24, borderRadius: 12),
+                                    ],
+                                  ),
+                                  const ShimmerContainer(width: 30, height: 24, borderRadius: 6),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(AppSpacing.l, AppSpacing.m, AppSpacing.l, AppSpacing.s),
+                        child: const ShimmerContainer(width: 100, height: 20),
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
+                      sliver: SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: AppSpacing.s),
+                              child: Container(
+                                padding: const EdgeInsets.all(AppSpacing.m),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const ShimmerContainer(width: 32, height: 32, borderRadius: 16),
+                                        const SizedBox(width: AppSpacing.s),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: const [
+                                            ShimmerContainer(width: 100, height: 16),
+                                            SizedBox(height: 4),
+                                            ShimmerContainer(width: 60, height: 12),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: AppSpacing.m),
+                                    const ShimmerContainer(width: double.infinity, height: 14),
+                                    const SizedBox(height: 6),
+                                    const ShimmerContainer(width: double.infinity, height: 14),
+                                    const SizedBox(height: 6),
+                                    const ShimmerContainer(width: 150, height: 14),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                          childCount: 3,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            } else if (state is ForumDetailError) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(AppSpacing.xl),
+                  child: ErrorState(
+                    message: state.message,
+                    onRetry: () {
+                      context.read<ForumDetailBloc>().add(LoadForumReplies(topic.id));
+                    },
+                  ),
+                ),
+              );
+            } else if (state is ForumDetailLoaded) {
+              return CustomScrollView(
+                physics: const BouncingScrollPhysics(),
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m, vertical: AppSpacing.s),
+                      child: ForumPostCard(topic: topic),
+                    ),
+                  ),
+                  
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(AppSpacing.l, AppSpacing.m, AppSpacing.l, AppSpacing.s),
+                      child: Text(
+                        'Yanıtlar',
+                        style: AppTypography.h3.copyWith(fontSize: 16),
+                      ),
+                    ),
+                  ),
+
+                  if (state.replies.isEmpty)
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.all(AppSpacing.xl),
+                        child: Center(
+                          child: Text(
+                            'Henüz yanıt yok. İlk yanıtlayan sen ol!',
+                            style: AppTypography.bodyMd.copyWith(color: AppColors.textSubtle),
+                          ),
+                        ),
+                      ),
+                    )
+                  else
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.only(
+                              bottom: index == state.replies.length - 1 ? 100.0 : 0,
+                            ),
+                            child: ForumReplyCard(reply: state.replies[index]),
+                          );
+                        },
+                        childCount: state.replies.length,
+                      ),
+                    ),
+                ],
+              );
+            }
+            return const SizedBox.shrink();
+          },
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {},
+          backgroundColor: AppColors.primary,
+          icon: const Icon(Icons.reply_rounded, color: Colors.white),
+          label: Text(
+            'Yanıt Yaz',
+            style: AppTypography.bodyMd.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          elevation: 4,
+        ),
+      ),
+    );
+  }
+}

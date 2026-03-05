@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/forum/presentation/pages/forum_page.dart';
+import '../../features/forum/presentation/pages/detail/forum_detail_page.dart';
+import '../../features/forum/domain/entities/forum_topic.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import 'route_paths.dart';
 import 'main_navigation.dart';
@@ -44,6 +46,16 @@ class AppRouter {
               GoRoute(
                 path: RoutePaths.forum,
                 builder: (context, state) => const ForumPage(),
+                routes: [
+                  GoRoute(
+                    path: RoutePaths.forumDetail,
+                    parentNavigatorKey: _rootNavigatorKey,
+                    builder: (context, state) {
+                      final topic = state.extra as ForumTopic;
+                      return ForumDetailPage(topic: topic);
+                    },
+                  ),
+                ],
               ),
             ],
           ),

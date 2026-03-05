@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../app/router/route_paths.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
@@ -39,7 +41,7 @@ class ForumTopicCard extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(AppRadius.lg),
           onTap: () {
-            // TODO: Navigate to forum topic details
+            context.go('${RoutePaths.forum}/${RoutePaths.forumDetail}', extra: topic);
           },
           child: Padding(
             padding: const EdgeInsets.all(AppSpacing.m),
