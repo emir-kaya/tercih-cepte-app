@@ -1,0 +1,3 @@
+class ProfileLocalDataSource {
+  // Placeholder datasource
+}
