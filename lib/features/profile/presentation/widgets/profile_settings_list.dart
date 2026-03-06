@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
-import '../../../../core/theme/app_radius.dart';
 
 class ProfileSettingsList extends StatelessWidget {
   const ProfileSettingsList({super.key});
@@ -12,8 +13,8 @@ class ProfileSettingsList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: AppSpacing.s, bottom: AppSpacing.s),
+        const Padding(
+          padding: EdgeInsets.only(left: AppSpacing.s, bottom: AppSpacing.s),
           child: Text(
             'Uygulama Ayarları',
             style: AppTypography.label,
@@ -33,7 +34,7 @@ class ProfileSettingsList extends StatelessWidget {
                 trailing: Switch(
                   value: true, // Mock value
                   onChanged: (val) {},
-                  activeColor: AppColors.primary,
+                  activeThumbColor: AppColors.primary,
                 ),
               ),
               const Divider(height: 1, color: AppColors.border),
@@ -57,15 +58,15 @@ class ProfileSettingsList extends StatelessWidget {
                 trailing: Switch(
                   value: false, // Mock value
                   onChanged: (val) {},
-                  activeColor: AppColors.primary,
+                  activeThumbColor: AppColors.primary,
                 ),
               ),
             ],
           ),
         ),
         const SizedBox(height: AppSpacing.xl),
-        Padding(
-          padding: const EdgeInsets.only(left: AppSpacing.s, bottom: AppSpacing.s),
+        const Padding(
+          padding: EdgeInsets.only(left: AppSpacing.s, bottom: AppSpacing.s),
           child: Text(
             'Hesap',
             style: AppTypography.label,
@@ -134,7 +135,7 @@ class ProfileSettingsList extends StatelessWidget {
                   ),
                 ),
               ),
-              if (trailing != null) trailing,
+              ?trailing,
             ],
           ),
         ),

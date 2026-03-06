@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'featured_university.dart';
+
 import 'dashboard_stats.dart';
+import 'featured_university.dart';
 
 class HomeOverview extends Equatable {
   final DashboardStats stats;

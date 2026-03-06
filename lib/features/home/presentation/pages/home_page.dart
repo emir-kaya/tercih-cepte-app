@@ -2,20 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../app/di/injector.dart';
-import '../../../../core/widgets/app_scaffold.dart';
-import '../../../../core/widgets/state_widgets/loading_state.dart';
-import '../../../../core/widgets/state_widgets/error_state.dart';
 import '../../../../core/theme/app_spacing.dart';
-
-import '../widgets/home_shimmer.dart';
-
+import '../../../../core/widgets/app_scaffold.dart';
+import '../../../../core/widgets/state_widgets/error_state.dart';
 import '../bloc/home_bloc.dart';
 import '../bloc/home_event.dart';
 import '../bloc/home_state.dart';
-
-import '../widgets/home_header.dart';
-import '../widgets/home_featured_universities.dart';
 import '../widgets/home_dashboard.dart';
+import '../widgets/home_featured_universities.dart';
+import '../widgets/home_header.dart';
+import '../widgets/home_shimmer.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

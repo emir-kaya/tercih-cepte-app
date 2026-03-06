@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../../app/di/injector.dart';
-import '../../../../core/widgets/app_scaffold.dart';
-import '../../../../core/theme/app_colors.dart';
 import '../../../../app/router/route_paths.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/widgets/app_scaffold.dart';
 import '../bloc/splash_bloc.dart';
 import '../bloc/splash_event.dart';
 import '../bloc/splash_state.dart';
@@ -111,7 +112,7 @@ class _SplashPageState extends State<SplashPage>
             _navigateTo(state.target);
           } else if (state is SplashForceUpdateRequired) {
             // TODO: Implement Force Update Dialog
-            debugPrint("Update required: ${state.message}");
+            debugPrint('Update required: ${state.message}');
           }
         },
         child: AppScaffold(
@@ -126,8 +127,8 @@ class _SplashPageState extends State<SplashPage>
                     children: [
                       SlideTransition(
                         position: _slideAnimation,
-                        child: Text(
-                          "TERCİH CEPTE",
+                        child: const Text(
+                          'TERCİH CEPTE',
                           style: TextStyle(
                             fontSize: 36,
                             fontWeight: FontWeight.bold,
@@ -140,8 +141,8 @@ class _SplashPageState extends State<SplashPage>
                       const SizedBox(height: 16),
                       FadeTransition(
                         opacity: _fadeAnimation,
-                        child: Text(
-                          "Geleceğine hazır mısın?",
+                        child: const Text(
+                          'Geleceğine hazır mısın?',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w400,
@@ -177,8 +178,8 @@ class _SplashPageState extends State<SplashPage>
                       const SizedBox(height: 16),
                       FadeTransition(
                         opacity: _fadeAnimation,
-                        child: Text(
-                          "Üniversite yolculuğunuzda yanınızdayız",
+                        child: const Text(
+                          'Üniversite yolculuğunuzda yanınızdayız',
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w300,

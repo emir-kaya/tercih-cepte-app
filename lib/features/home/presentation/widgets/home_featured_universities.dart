@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../domain/entities/featured_university.dart';
+
+import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
-import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/widgets/app_card.dart';
+import '../../domain/entities/featured_university.dart';
 
 class HomeFeaturedUniversities extends StatelessWidget {
   final List<FeaturedUniversity> universities;

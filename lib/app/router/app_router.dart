@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../features/splash/presentation/pages/splash_page.dart';
-import '../../features/home/presentation/pages/home_page.dart';
-import '../../features/forum/presentation/pages/forum_page.dart';
-import '../../features/forum/presentation/pages/detail/forum_detail_page.dart';
 import '../../features/forum/domain/entities/forum_topic.dart';
+import '../../features/forum/presentation/pages/detail/forum_detail_page.dart';
+import '../../features/forum/presentation/pages/forum_page.dart';
+import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
-import 'route_paths.dart';
+import '../../features/search/presentation/pages/search_page.dart';
+import '../../features/splash/presentation/pages/splash_page.dart';
 import 'main_navigation.dart';
+import 'route_paths.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 final GlobalKey<NavigatorState> _shellNavigatorHomeKey = GlobalKey<NavigatorState>(debugLabel: 'shellHome');
@@ -37,6 +38,13 @@ class AppRouter {
               GoRoute(
                 path: RoutePaths.home,
                 builder: (context, state) => const HomePage(),
+                routes: [
+                  GoRoute(
+                    path: RoutePaths.search,
+                    parentNavigatorKey: _rootNavigatorKey,
+                    builder: (context, state) => const SearchPage(),
+                  ),
+                ],
               ),
             ],
           ),

@@ -1,5 +1,5 @@
-import '../models/forum_topic_model.dart';
 import '../models/forum_reply_model.dart';
+import '../models/forum_topic_model.dart';
 
 class ForumLocalDataSource {
   Future<List<ForumTopicModel>> getTopics() async {

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+
 import '../../../../app/router/route_paths.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
-import '../../../../core/theme/app_radius.dart';
 import '../../domain/entities/forum_topic.dart';
-import 'package:intl/intl.dart';
 
 class ForumTopicCard extends StatelessWidget {
   final ForumTopic topic;
@@ -125,11 +126,11 @@ class ForumTopicCard extends StatelessWidget {
                     const SizedBox(width: AppSpacing.m),
                     Row(
                       children: [
-                        Icon(Icons.remove_red_eye_rounded, size: 16, color: AppColors.textSubtle),
+                        const Icon(Icons.remove_red_eye_rounded, size: 16, color: AppColors.textSubtle),
                         const SizedBox(width: 4),
                         Text(topic.viewCount.toString(), style: AppTypography.caption.copyWith(color: AppColors.textSubtle)),
                         const SizedBox(width: AppSpacing.m),
-                        Icon(Icons.chat_bubble_outline_rounded, size: 16, color: AppColors.textSubtle),
+                        const Icon(Icons.chat_bubble_outline_rounded, size: 16, color: AppColors.textSubtle),
                         const SizedBox(width: 4),
                         Text(topic.replyCount.toString(), style: AppTypography.caption.copyWith(color: AppColors.textSubtle)),
                       ],

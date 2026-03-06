@@ -1,5 +1,5 @@
-import '../../../../core/utils/result.dart';
 import '../../../../core/utils/failures.dart';
+import '../../../../core/utils/result.dart';
 import '../repositories/splash_repository.dart';
 
 class CheckInitialData {

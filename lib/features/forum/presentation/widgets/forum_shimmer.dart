@@ -10,21 +10,21 @@ class ForumShimmer extends StatelessWidget {
     return AppShimmer(
       child: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.m),
+              padding: EdgeInsets.all(AppSpacing.m),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const ShimmerContainer(width: 150, height: 32),
-                      const ShimmerContainer(width: 100, height: 36, borderRadius: 100),
+                      ShimmerContainer(width: 150, height: 32),
+                      ShimmerContainer(width: 100, height: 36, borderRadius: 100),
                     ]
                   ),
-                  const SizedBox(height: AppSpacing.m),
-                  const ShimmerContainer(width: double.infinity, height: 48), // Search bar
+                  SizedBox(height: AppSpacing.m),
+                  ShimmerContainer(width: double.infinity, height: 48), // Search bar
                 ],
               ),
             ),

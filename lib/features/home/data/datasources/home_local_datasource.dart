@@ -1,5 +1,5 @@
-import '../models/featured_university_model.dart';
 import '../models/dashboard_stats_model.dart';
+import '../models/featured_university_model.dart';
 import '../models/home_overview_model.dart';
 
 class HomeLocalDataSource {
@@ -7,12 +7,12 @@ class HomeLocalDataSource {
     // Simulate network delay
     await Future.delayed(const Duration(milliseconds: 800));
 
-    final stats = const DashboardStatsModel(
+    const stats = DashboardStatsModel(
       totalUniversities: 208,
       totalDepartments: 14500,
     );
 
-    final universities = const [
+    const universities = [
       FeaturedUniversityModel(
         id: '1',
         name: 'Boğaziçi Üniversitesi',
@@ -47,7 +47,7 @@ class HomeLocalDataSource {
       ),
     ];
 
-    return HomeOverviewModel(
+    return const HomeOverviewModel(
       stats: stats,
       featuredUniversities: universities,
     );

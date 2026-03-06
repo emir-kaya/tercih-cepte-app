@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../../../../core/theme/app_typography.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../../../app/router/route_paths.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/theme/app_spacing.dart';
+import '../../../../../core/theme/app_typography.dart';
 import '../../../../../core/widgets/app_text_field.dart';
 
 class HomeHeader extends StatelessWidget {
@@ -20,7 +23,7 @@ class HomeHeader extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Merhaba, Emir 👋', style: AppTypography.h3),
+                  const Text('Merhaba, Emir 👋', style: AppTypography.h3),
                   const SizedBox(height: AppSpacing.xs),
                   Text(
                     'Bugün hedefine bir adım daha yaklaş.',
@@ -36,9 +39,16 @@ class HomeHeader extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSpacing.l),
-          const AppTextField(
-            hintText: 'Üniversite, bölüm, ders ara...',
-            prefixIcon: Icon(Icons.search_rounded, color: AppColors.textSubtle),
+          GestureDetector(
+            onTap: () {
+              context.go('${RoutePaths.home}/${RoutePaths.search}');
+            },
+            child: const AbsorbPointer(
+              child: AppTextField(
+                hintText: 'Üniversite, bölüm, ders ara...',
+                prefixIcon: Icon(Icons.search_rounded, color: AppColors.textSubtle),
+              ),
+            ),
           ),
         ],
       ),

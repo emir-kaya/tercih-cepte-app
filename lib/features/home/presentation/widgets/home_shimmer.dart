@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../../core/theme/app_spacing.dart';
+
 import '../../../../core/theme/app_radius.dart';
+import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/app_shimmer.dart';
 
 class HomeShimmer extends StatelessWidget {
@@ -12,38 +13,38 @@ class HomeShimmer extends StatelessWidget {
       child: CustomScrollView(
         slivers: [
           // Header Header Placeholders
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.m),
+              padding: EdgeInsets.all(AppSpacing.m),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: AppSpacing.l),
-                  const ShimmerContainer(width: 200, height: 32),
-                  const SizedBox(height: AppSpacing.s),
-                  const ShimmerContainer(width: double.infinity, height: 48, borderRadius: AppRadius.sm), // Search bar
+                  SizedBox(height: AppSpacing.l),
+                  ShimmerContainer(width: 200, height: 32),
+                  SizedBox(height: AppSpacing.s),
+                  ShimmerContainer(width: double.infinity, height: 48, borderRadius: AppRadius.sm), // Search bar
                 ],
               ),
             ),
           ),
           
           // Dashboard Placeholder
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m, vertical: AppSpacing.xs),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.m, vertical: AppSpacing.xs),
               child: Column(
                 children: [
-                   const Row(
+                   Row(
                     children: [
                        ShimmerContainer(width: 150, height: 24),
                     ],
                   ),
-                  const SizedBox(height: AppSpacing.s),
+                  SizedBox(height: AppSpacing.s),
                   Row(
                     children: [
-                      Expanded(child: const ShimmerContainer(height: 120)),
-                      const SizedBox(width: AppSpacing.m),
-                      Expanded(child: const ShimmerContainer(height: 120)),
+                      Expanded(child: ShimmerContainer(height: 120)),
+                      SizedBox(width: AppSpacing.m),
+                      Expanded(child: ShimmerContainer(height: 120)),
                     ],
                   ),
                 ],

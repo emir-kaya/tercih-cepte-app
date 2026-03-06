@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../domain/entities/dashboard_stats.dart';
-import '../../../../../core/theme/app_spacing.dart';
-import '../../../../../core/theme/app_typography.dart';
+
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/theme/app_radius.dart';
+import '../../../../../core/theme/app_spacing.dart';
+import '../../../../../core/theme/app_typography.dart';
+import '../../domain/entities/dashboard_stats.dart';
 
 class HomeDashboard extends StatelessWidget {
   final DashboardStats stats;
@@ -43,7 +44,7 @@ class HomeDashboard extends StatelessWidget {
                   icon: Icons.menu_book_rounded,
                   gradientColors: [
                     AppColors.info,
-                    Color(0xFF2563EB), // slightly darker info
+                    const Color(0xFF2563EB), // slightly darker info
                   ],
                 ),
               ),

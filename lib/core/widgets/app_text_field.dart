@@ -4,6 +4,7 @@ class AppTextField extends StatelessWidget {
   final String? hintText;
   final String? labelText;
   final TextEditingController? controller;
+  final FocusNode? focusNode;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final bool obscureText;
@@ -14,6 +15,7 @@ class AppTextField extends StatelessWidget {
     this.hintText,
     this.labelText,
     this.controller,
+    this.focusNode,
     this.prefixIcon,
     this.suffixIcon,
     this.obscureText = false,
@@ -24,6 +26,7 @@ class AppTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      focusNode: focusNode,
       obscureText: obscureText,
       onChanged: onChanged,
       decoration: InputDecoration(

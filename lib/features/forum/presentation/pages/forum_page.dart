@@ -6,15 +6,13 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/widgets/app_scaffold.dart';
-import '../../../../core/widgets/state_widgets/loading_state.dart';
-import '../../../../core/widgets/state_widgets/error_state.dart';
 import '../../../../core/widgets/state_widgets/empty_state.dart';
-
+import '../../../../core/widgets/state_widgets/error_state.dart';
 import '../bloc/forum_bloc.dart';
 import '../bloc/forum_event.dart';
 import '../bloc/forum_state.dart';
-import '../widgets/forum_topic_card.dart';
 import '../widgets/forum_shimmer.dart';
+import '../widgets/forum_topic_card.dart';
 
 class ForumPage extends StatelessWidget {
   const ForumPage({super.key});
@@ -48,7 +46,7 @@ class _ForumContentView extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Forum', style: AppTypography.h1),
+                  const Text('Forum', style: AppTypography.h1),
                   Material(
                     color: AppColors.primary.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(100),

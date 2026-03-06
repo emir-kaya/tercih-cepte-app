@@ -7,14 +7,12 @@ import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
 import '../../../../../core/widgets/app_scaffold.dart';
-import '../../../../../core/widgets/state_widgets/error_state.dart';
 import '../../../../../core/widgets/app_shimmer.dart';
-
+import '../../../../../core/widgets/state_widgets/error_state.dart';
 import '../../../domain/entities/forum_topic.dart';
 import '../../bloc/detail/forum_detail_bloc.dart';
 import '../../bloc/detail/forum_detail_event.dart';
 import '../../bloc/detail/forum_detail_state.dart';
-
 import '../../widgets/detail/forum_post_card.dart';
 import '../../widgets/detail/forum_reply_card.dart';
 
@@ -67,49 +65,49 @@ class ForumDetailPage extends StatelessWidget {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(16),
                           ),
-                          child: Column(
+                          child: const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
                                 children: [
-                                  const ShimmerContainer(width: 40, height: 40, borderRadius: 20),
-                                  const SizedBox(width: AppSpacing.s),
+                                  ShimmerContainer(width: 40, height: 40, borderRadius: 20),
+                                  SizedBox(width: AppSpacing.s),
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: const [
+                                    children: [
                                       ShimmerContainer(width: 120, height: 16),
                                       SizedBox(height: 4),
                                       ShimmerContainer(width: 80, height: 12),
                                     ],
                                   ),
-                                  const Spacer(),
-                                  const ShimmerContainer(width: 50, height: 12),
+                                  Spacer(),
+                                  ShimmerContainer(width: 50, height: 12),
                                 ],
                               ),
-                              const SizedBox(height: AppSpacing.m),
-                              const ShimmerContainer(width: double.infinity, height: 24),
-                              const SizedBox(height: AppSpacing.s),
-                              const ShimmerContainer(width: 200, height: 16),
-                              const SizedBox(height: AppSpacing.xl),
-                              const ShimmerContainer(width: double.infinity, height: 14),
-                              const SizedBox(height: 6),
-                              const ShimmerContainer(width: double.infinity, height: 14),
-                              const SizedBox(height: 6),
-                              const ShimmerContainer(width: double.infinity, height: 14),
-                              const SizedBox(height: 6),
-                              const ShimmerContainer(width: 200, height: 14),
-                              const SizedBox(height: AppSpacing.xl),
+                              SizedBox(height: AppSpacing.m),
+                              ShimmerContainer(width: double.infinity, height: 24),
+                              SizedBox(height: AppSpacing.s),
+                              ShimmerContainer(width: 200, height: 16),
+                              SizedBox(height: AppSpacing.xl),
+                              ShimmerContainer(width: double.infinity, height: 14),
+                              SizedBox(height: 6),
+                              ShimmerContainer(width: double.infinity, height: 14),
+                              SizedBox(height: 6),
+                              ShimmerContainer(width: double.infinity, height: 14),
+                              SizedBox(height: 6),
+                              ShimmerContainer(width: 200, height: 14),
+                              SizedBox(height: AppSpacing.xl),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
-                                    children: const [
+                                    children: [
                                       ShimmerContainer(width: 60, height: 24, borderRadius: 12),
                                       SizedBox(width: AppSpacing.s),
                                       ShimmerContainer(width: 80, height: 24, borderRadius: 12),
                                     ],
                                   ),
-                                  const ShimmerContainer(width: 30, height: 24, borderRadius: 6),
+                                  ShimmerContainer(width: 30, height: 24, borderRadius: 6),
                                 ],
                               ),
                             ],
@@ -117,10 +115,10 @@ class ForumDetailPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SliverToBoxAdapter(
+                    const SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(AppSpacing.l, AppSpacing.m, AppSpacing.l, AppSpacing.s),
-                        child: const ShimmerContainer(width: 100, height: 20),
+                        padding: EdgeInsets.fromLTRB(AppSpacing.l, AppSpacing.m, AppSpacing.l, AppSpacing.s),
+                        child: ShimmerContainer(width: 100, height: 20),
                       ),
                     ),
                     SliverPadding(
@@ -136,16 +134,16 @@ class ForumDetailPage extends StatelessWidget {
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: Column(
+                                child: const Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
                                       children: [
-                                        const ShimmerContainer(width: 32, height: 32, borderRadius: 16),
-                                        const SizedBox(width: AppSpacing.s),
+                                        ShimmerContainer(width: 32, height: 32, borderRadius: 16),
+                                        SizedBox(width: AppSpacing.s),
                                         Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: const [
+                                          children: [
                                             ShimmerContainer(width: 100, height: 16),
                                             SizedBox(height: 4),
                                             ShimmerContainer(width: 60, height: 12),
@@ -153,12 +151,12 @@ class ForumDetailPage extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: AppSpacing.m),
-                                    const ShimmerContainer(width: double.infinity, height: 14),
-                                    const SizedBox(height: 6),
-                                    const ShimmerContainer(width: double.infinity, height: 14),
-                                    const SizedBox(height: 6),
-                                    const ShimmerContainer(width: 150, height: 14),
+                                    SizedBox(height: AppSpacing.m),
+                                    ShimmerContainer(width: double.infinity, height: 14),
+                                    SizedBox(height: 6),
+                                    ShimmerContainer(width: double.infinity, height: 14),
+                                    SizedBox(height: 6),
+                                    ShimmerContainer(width: 150, height: 14),
                                   ],
                                 ),
                               ),

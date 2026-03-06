@@ -50,7 +50,7 @@ class NetworkExceptions {
         return const ServerFailure('Unexpected error occurred');
       }
     } else {
-      return error.toString().contains("is not a subtype of") 
+      return error.toString().contains('is not a subtype of') 
           ? const ServerFailure('Unable to process the data')
           : const ServerFailure('Unexpected error occurred');
     }

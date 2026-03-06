@@ -1,5 +1,5 @@
-import '../../../../core/utils/result.dart';
 import '../../../../core/utils/failures.dart';
+import '../../../../core/utils/result.dart';
 
 abstract class SplashRepository {
   /// Checks initial application data like force updates, auth state, etc.

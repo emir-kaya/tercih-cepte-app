@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
 import '../../theme/app_colors.dart';
-import '../../theme/app_typography.dart';
 import '../../theme/app_spacing.dart';
+import '../../theme/app_typography.dart';
 import '../app_button.dart';
 
 class ErrorState extends StatelessWidget {
@@ -29,7 +30,7 @@ class ErrorState extends StatelessWidget {
               color: AppColors.error,
             ),
             const SizedBox(height: AppSpacing.m),
-            Text(
+            const Text(
               'Bir Hata Oluştu',
               style: AppTypography.h3,
               textAlign: TextAlign.center,
