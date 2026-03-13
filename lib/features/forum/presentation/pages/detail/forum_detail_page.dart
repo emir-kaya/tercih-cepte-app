@@ -14,6 +14,7 @@ import '../../bloc/detail/forum_detail_bloc.dart';
 import '../../bloc/detail/forum_detail_event.dart';
 import '../../bloc/detail/forum_detail_state.dart';
 import '../../widgets/detail/forum_post_card.dart';
+import '../../widgets/detail/forum_reply_bottom_sheet.dart';
 import '../../widgets/detail/forum_reply_card.dart';
 
 class ForumDetailPage extends StatelessWidget {
@@ -235,7 +236,7 @@ class ForumDetailPage extends StatelessWidget {
           },
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {},
+          onPressed: () => ForumReplyBottomSheet.show(context),
           backgroundColor: AppColors.primary,
           icon: const Icon(Icons.reply_rounded, color: Colors.white),
           label: Text(

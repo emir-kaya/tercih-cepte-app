@@ -28,7 +28,7 @@ class EmptyState extends StatelessWidget {
             Icon(
               icon,
               size: 64,
-              color: AppColors.textSubtle.withOpacity(0.5),
+              color: AppColors.textSubtle.withValues(alpha: 0.5),
             ),
             const SizedBox(height: AppSpacing.m),
             Text(

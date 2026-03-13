@@ -20,7 +20,14 @@ import '../../features/profile/presentation/bloc/profile_bloc.dart';
 import '../../features/splash/data/repositories/splash_repository_impl.dart';
 import '../../features/splash/domain/repositories/splash_repository.dart';
 import '../../features/splash/domain/usecases/check_initial_data.dart';
-import '../../features/splash/presentation/bloc/splash_bloc.dart';// Home
+import '../../features/splash/presentation/bloc/splash_bloc.dart';
+// University Detail
+import '../../features/university_detail/data/datasources/university_detail_local_datasource.dart';
+import '../../features/university_detail/data/repositories/university_detail_repository_impl.dart';
+import '../../features/university_detail/domain/repositories/university_detail_repository.dart';
+import '../../features/university_detail/domain/usecases/get_university_detail.dart';
+import '../../features/university_detail/presentation/bloc/university_detail_bloc.dart';
+// Home
 import 'injector.dart';
 
 void registerSplashModules() {
@@ -61,6 +68,24 @@ void registerForumModules() {
   // BLoC
   getIt.registerFactory(() => ForumBloc(getIt()));
   getIt.registerFactory(() => ForumDetailBloc(getIt()));
+}
+
+void registerUniversityDetailModules() {
+  // Data Sources
+  getIt.registerLazySingleton<UniversityDetailLocalDataSource>(
+    () => UniversityDetailLocalDataSource(),
+  );
+
+  // Repositories
+  getIt.registerLazySingleton<UniversityDetailRepository>(
+    () => UniversityDetailRepositoryImpl(localDataSource: getIt()),
+  );
+
+  // Use Cases
+  getIt.registerLazySingleton(() => GetUniversityDetail(getIt()));
+
+  // BLoC
+  getIt.registerFactory(() => UniversityDetailBloc(getIt()));
 }
 
 void registerProfileModules() {

@@ -10,4 +10,8 @@ class CheckInitialData {
   Future<Result<bool, Failure>> call() async {
     return await repository.checkInitialData();
   }
+
+  Future<bool> isOnboardingCompleted() {
+    return repository.isOnboardingCompleted();
+  }
 }

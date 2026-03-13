@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../domain/usecases/check_initial_data.dart';
 
+import '../../../../core/utils/result.dart';
+import '../../domain/usecases/check_initial_data.dart';
 import 'splash_event.dart';
 import 'splash_state.dart';
 
@@ -22,22 +23,24 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
 
     final result = await _checkInitialData();
 
-    result.fold(
-      (failure) {
+    switch (result) {
+      case Error(:final failure):
         emit(SplashError(failure.message));
-        // Fallback or handle error, for now we will just navigate to home instead of blocking the user
         emit(const SplashNavigationReady(target: SplashNavigationTarget.home));
-      },
-      (needsForceUpdate) {
-        if (needsForceUpdate) {
+
+      case Success(:final value):
+        if (value) {
           emit(const SplashForceUpdateRequired(
             message: 'Uygulamanın yeni bir sürümü mevcut. Lütfen güncelleyin.',
           ));
         } else {
-          // If no update is required, navigate to home (or onboard/login depending on auth state later)
-          emit(const SplashNavigationReady(target: SplashNavigationTarget.home));
+          final onboardingDone = await _checkInitialData.isOnboardingCompleted();
+          if (onboardingDone) {
+            emit(const SplashNavigationReady(target: SplashNavigationTarget.home));
+          } else {
+            emit(const SplashNavigationReady(target: SplashNavigationTarget.onboard));
+          }
         }
-      },
-    );
+    }
   }
 }

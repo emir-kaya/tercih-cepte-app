@@ -15,13 +15,17 @@ class ProfileWizardAction extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.lg),
         gradient: const LinearGradient(
-          colors: [AppColors.primary, AppColors.primaryDark],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
+          colors: [
+            AppColors.primaryDark,
+            AppColors.primary,
+            AppColors.accent,
+          ],
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.4),
+            color: AppColors.primary.withValues(alpha: 0.3),
             blurRadius: 16,
             offset: const Offset(0, 6),
           ),
@@ -33,16 +37,21 @@ class ProfileWizardAction extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.lg),
           onTap: () {},
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m, vertical: AppSpacing.m),
+            padding: const EdgeInsets.all(AppSpacing.m),
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(AppSpacing.s),
+                  width: 48,
+                  height: 48,
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    shape: BoxShape.circle,
+                    color: Colors.white.withValues(alpha: 0.18),
+                    borderRadius: BorderRadius.circular(14),
                   ),
-                  child: const Icon(Icons.auto_awesome_rounded, color: Colors.white, size: 24),
+                  child: const Icon(
+                    Icons.auto_awesome_rounded,
+                    color: Colors.white,
+                    size: 24,
+                  ),
                 ),
                 const SizedBox(width: AppSpacing.m),
                 Expanded(
@@ -51,23 +60,25 @@ class ProfileWizardAction extends StatelessWidget {
                     children: [
                       Text(
                         'Tercih Sihirbazı',
-                        style: AppTypography.bodyLg.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                        style: AppTypography.bodyLg.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        'Yapay zeka ile sana en uygun bölümü bul',
-                        style: AppTypography.caption.copyWith(color: Colors.white.withValues(alpha: 0.9), fontSize: 12),
+                        'Sana en uygun bölümü birlikte keşfedelim',
+                        style: AppTypography.bodySm.copyWith(
+                          color: Colors.white.withValues(alpha: 0.8),
+                        ),
                       ),
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.arrow_forward_ios_rounded, color: Colors.white, size: 14),
+                const Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  color: Colors.white,
+                  size: 16,
                 ),
               ],
             ),

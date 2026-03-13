@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/forum/domain/entities/forum_topic.dart';
+import '../../features/forum/presentation/pages/create/forum_create_topic_page.dart';
 import '../../features/forum/presentation/pages/detail/forum_detail_page.dart';
 import '../../features/forum/presentation/pages/forum_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
+import '../../features/onboard/presentation/pages/onboard_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/search/presentation/pages/search_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
+import '../../features/university_detail/presentation/pages/university_detail_page.dart';
 import 'main_navigation.dart';
 import 'route_paths.dart';
 
@@ -27,6 +30,10 @@ class AppRouter {
         path: RoutePaths.splash,
         builder: (context, state) => const SplashPage(),
       ),
+      GoRoute(
+        path: RoutePaths.onboard,
+        builder: (context, state) => const OnboardPage(),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return MainNavigation(navigationShell: navigationShell);
@@ -44,6 +51,17 @@ class AppRouter {
                     parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => const SearchPage(),
                   ),
+                  GoRoute(
+                    path: RoutePaths.universityDetail,
+                    parentNavigatorKey: _rootNavigatorKey,
+                    builder: (context, state) {
+                      final extra = state.extra as Map<String, String>;
+                      return UniversityDetailPage(
+                        universityId: extra['id']!,
+                        universityName: extra['name']!,
+                      );
+                    },
+                  ),
                 ],
               ),
             ],
@@ -55,6 +73,11 @@ class AppRouter {
                 path: RoutePaths.forum,
                 builder: (context, state) => const ForumPage(),
                 routes: [
+                  GoRoute(
+                    path: RoutePaths.forumCreate,
+                    parentNavigatorKey: _rootNavigatorKey,
+                    builder: (context, state) => const ForumCreateTopicPage(),
+                  ),
                   GoRoute(
                     path: RoutePaths.forumDetail,
                     parentNavigatorKey: _rootNavigatorKey,

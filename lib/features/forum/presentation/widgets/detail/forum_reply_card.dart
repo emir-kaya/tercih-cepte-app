@@ -5,6 +5,7 @@ import '../../../../../core/theme/app_radius.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
 import '../../../domain/entities/forum_reply.dart';
+import 'forum_reply_bottom_sheet.dart';
 
 class ForumReplyCard extends StatelessWidget {
   final ForumReply reply;
@@ -99,7 +100,10 @@ class ForumReplyCard extends StatelessWidget {
               ),
               const SizedBox(width: AppSpacing.l),
               InkWell(
-                onTap: () {},
+                onTap: () => ForumReplyBottomSheet.show(
+                  context,
+                  replyingTo: reply.authorName,
+                ),
                 borderRadius: BorderRadius.circular(12),
                 child: Padding(
                   padding: const EdgeInsets.all(AppSpacing.xs),

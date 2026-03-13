@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../app/di/injector.dart';
+import '../../../../app/router/route_paths.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/widgets/app_scaffold.dart';
@@ -33,94 +36,77 @@ class _ForumContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        context.read<ForumBloc>().add(RefreshForumData());
-      },
-      child: CustomScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.only(top: AppSpacing.xl, left: AppSpacing.m, right: AppSpacing.m, bottom: AppSpacing.m),
-            sliver: SliverToBoxAdapter(
-              child: Row(
+    final topPadding = MediaQuery.of(context).padding.top;
+
+    return Column(
+      children: [
+        // Fixed header + search bar
+        Container(
+          color: AppColors.background,
+          padding: EdgeInsets.only(
+            top: topPadding + AppSpacing.m,
+            left: AppSpacing.l,
+            right: AppSpacing.l,
+            bottom: AppSpacing.m,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Forum', style: AppTypography.h1),
-                  Material(
-                    color: AppColors.primary.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(100),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(100),
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.add_rounded, size: 20, color: AppColors.primaryLight),
-                            const SizedBox(width: 6),
-                            Text(
-                              'Yeni Konu',
-                              style: AppTypography.label.copyWith(
-                                color: AppColors.primaryLight,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                              ),
-                            ),
-                          ],
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Forum', style: AppTypography.h1),
+                      const SizedBox(height: AppSpacing.xxs),
+                      Text(
+                        'Tartış, sor, keşfet',
+                        style: AppTypography.bodyMd.copyWith(
+                          color: AppColors.textSubtle,
                         ),
                       ),
-                    ),
+                    ],
                   ),
+                  _buildNewTopicButton(context),
                 ],
               ),
-            ),
+              const SizedBox(height: AppSpacing.m),
+              _buildSearchBar(),
+            ],
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
-              child: Column(
-                children: [
-                   TextFormField(
-                    decoration: InputDecoration(
-                      hintText: 'Konu, üniversite veya bölüm ara...',
-                      prefixIcon: const Icon(Icons.search_rounded, color: AppColors.textSubtle),
-                      filled: true,
-                      fillColor: AppColors.surfaceVariant,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.m),
-                ],
-              ),
-            ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m).copyWith(bottom: 120), // Bottom padding for Nav Bar
-            sliver: BlocBuilder<ForumBloc, ForumState>(
+        ),
+
+        // Scrollable topic list
+        Expanded(
+          child: RefreshIndicator(
+            color: AppColors.primary,
+            backgroundColor: AppColors.surface,
+            onRefresh: () async {
+              context.read<ForumBloc>().add(RefreshForumData());
+            },
+            child: BlocBuilder<ForumBloc, ForumState>(
               builder: (context, state) {
                 if (state is ForumLoading || state is ForumInitial) {
-                  return const SliverFillRemaining(
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.m),
                     child: ForumShimmer(),
                   );
                 }
 
                 if (state is ForumError) {
-                  return SliverFillRemaining(
+                  return Center(
                     child: ErrorState(
                       message: state.message,
-                      onRetry: () => context.read<ForumBloc>().add(LoadForumData()),
+                      onRetry: () =>
+                          context.read<ForumBloc>().add(LoadForumData()),
                     ),
                   );
                 }
 
                 if (state is ForumLoaded) {
                   if (state.topics.isEmpty) {
-                    return const SliverFillRemaining(
+                    return const Center(
                       child: EmptyState(
                         title: 'Henüz Konu Yok',
                         message: 'İlk tartışmayı sen başlat!',
@@ -129,21 +115,93 @@ class _ForumContentView extends StatelessWidget {
                     );
                   }
 
-                  return SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        return ForumTopicCard(topic: state.topics[index]);
-                      },
-                      childCount: state.topics.length,
-                    ),
+                  return ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m)
+                        .copyWith(bottom: 120, top: AppSpacing.xs),
+                    itemCount: state.topics.length,
+                    itemBuilder: (context, index) {
+                      return ForumTopicCard(topic: state.topics[index]);
+                    },
                   );
                 }
 
-                return const SliverFillRemaining(child: SizedBox.shrink());
+                return const SizedBox.shrink();
               },
             ),
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNewTopicButton(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [AppColors.primary, AppColors.accent],
+        ),
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.3),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
         ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          onTap: () => context.go('${RoutePaths.forum}/${RoutePaths.forumCreate}'),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.edit_rounded, size: 18, color: Colors.white),
+                SizedBox(width: 6),
+                Text(
+                  'Yeni Konu',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surfaceVariant,
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        border: Border.all(color: AppColors.border, width: 0.5),
+      ),
+      child: TextFormField(
+        style: AppTypography.bodyMd,
+        decoration: InputDecoration(
+          hintText: 'Konu, üniversite veya etiket ara...',
+          hintStyle: AppTypography.bodyMd.copyWith(color: AppColors.textSubtle),
+          prefixIcon: const Padding(
+            padding: EdgeInsets.only(left: 14, right: 10),
+            child: Icon(Icons.search_rounded, color: AppColors.textSubtle, size: 22),
+          ),
+          prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
+          filled: false,
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 14,
+            horizontal: AppSpacing.m,
+          ),
+        ),
       ),
     );
   }

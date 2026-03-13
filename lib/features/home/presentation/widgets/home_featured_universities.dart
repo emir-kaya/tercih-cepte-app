@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../../app/router/route_paths.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
@@ -38,7 +40,12 @@ class HomeFeaturedUniversities extends StatelessWidget {
               return SizedBox(
                 width: 280,
                 child: AppCard(
-                  onTap: () {},
+                  onTap: () {
+                    context.go(
+                      '${RoutePaths.home}/${RoutePaths.universityDetail}',
+                      extra: {'id': item.id, 'name': item.name},
+                    );
+                  },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

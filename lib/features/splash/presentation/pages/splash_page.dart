@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -5,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../app/di/injector.dart';
 import '../../../../app/router/route_paths.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/widgets/app_scaffold.dart';
 import '../bloc/splash_bloc.dart';
 import '../bloc/splash_event.dart';
 import '../bloc/splash_state.dart';
@@ -21,11 +22,21 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<Offset> _slideAnimation;
-  late Animation<double> _fadeAnimation;
-  late Animation<double> _progressAnimation;
+    with TickerProviderStateMixin {
+  late AnimationController _mainController;
+  late AnimationController _pulseController;
+
+  // Staggered animations off _mainController (2500ms)
+  late Animation<double> _iconScale;
+  late Animation<double> _iconFade;
+  late Animation<double> _titleFade;
+  late Animation<Offset> _titleSlide;
+  late Animation<double> _subtitleFade;
+  late Animation<double> _bottomFade;
+
+  // Looping pulse for the ring
+  late Animation<double> _pulseScale;
+  late Animation<double> _pulseFade;
 
   @override
   void initState() {
@@ -34,48 +45,79 @@ class _SplashPageState extends State<SplashPage>
   }
 
   void _initAnimations() {
-    _controller = AnimationController(
-      // Made it a bit faster (2500ms) for better UX but retaining the smooth 3500ms feel depending on preference. Using 2500ms.
+    // Main staggered entrance — 2500ms total
+    _mainController = AnimationController(
       duration: const Duration(milliseconds: 2500),
       vsync: this,
     );
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, -2),
+    // Icon: 0%–40%
+    _iconScale = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _mainController,
+        curve: const Interval(0.0, 0.4, curve: Curves.elasticOut),
+      ),
+    );
+    _iconFade = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _mainController,
+        curve: const Interval(0.0, 0.25, curve: Curves.easeOut),
+      ),
+    );
+
+    // Title: 25%–60%
+    _titleFade = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _mainController,
+        curve: const Interval(0.25, 0.55, curve: Curves.easeOut),
+      ),
+    );
+    _titleSlide = Tween<Offset>(
+      begin: const Offset(0, 0.3),
       end: Offset.zero,
     ).animate(
       CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeOutCubic,
+        parent: _mainController,
+        curve: const Interval(0.25, 0.55, curve: Curves.easeOutCubic),
       ),
     );
 
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(
+    // Subtitle: 45%–75%
+    _subtitleFade = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0, 1.0, curve: Curves.easeIn),
+        parent: _mainController,
+        curve: const Interval(0.45, 0.75, curve: Curves.easeOut),
       ),
     );
 
-    _progressAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(
+    // Bottom loader: 60%–90%
+    _bottomFade = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
-        parent: _controller,
-        curve: Curves.linear,
+        parent: _mainController,
+        curve: const Interval(0.6, 0.9, curve: Curves.easeOut),
       ),
     );
 
-    _controller.forward();
+    // Looping pulse ring
+    _pulseController = AnimationController(
+      duration: const Duration(milliseconds: 1800),
+      vsync: this,
+    );
+    _pulseScale = Tween<double>(begin: 1.0, end: 1.6).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeOut),
+    );
+    _pulseFade = Tween<double>(begin: 0.4, end: 0.0).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeOut),
+    );
+
+    _mainController.forward();
+    _pulseController.repeat();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _mainController.dispose();
+    _pulseController.dispose();
     super.dispose();
   }
 
@@ -83,9 +125,10 @@ class _SplashPageState extends State<SplashPage>
     if (!mounted) return;
 
     switch (target) {
+      case SplashNavigationTarget.onboard:
+        context.go(RoutePaths.onboard);
       case SplashNavigationTarget.home:
         context.go(RoutePaths.home);
-      // Other cases will be handled when Auth/Onboard features are added
       default:
         context.go(RoutePaths.home);
     }
@@ -97,10 +140,9 @@ class _SplashPageState extends State<SplashPage>
       create: (context) => getIt<SplashBloc>()..add(const SplashStarted()),
       child: BlocListener<SplashBloc, SplashState>(
         listener: (context, state) async {
-          // Wait for animation to finish
-          if (!_controller.isCompleted) {
+          if (!_mainController.isCompleted) {
             try {
-              await _controller.forward().orCancel;
+              await _mainController.forward().orCancel;
             } on TickerCanceled {
               return;
             }
@@ -111,90 +153,341 @@ class _SplashPageState extends State<SplashPage>
           if (state is SplashNavigationReady) {
             _navigateTo(state.target);
           } else if (state is SplashForceUpdateRequired) {
-            // TODO: Implement Force Update Dialog
             debugPrint('Update required: ${state.message}');
           }
         },
-        child: AppScaffold(
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 48.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Spacer(),
-                  Column(
+        child: Scaffold(
+          body: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF07101A),
+                  Color(0xFF0C1820),
+                  Color(0xFF0A1A1F),
+                ],
+              ),
+            ),
+            child: Stack(
+              children: [
+                // Floating orbs
+                const _FloatingOrbs(),
+
+                // Main content
+                SafeArea(
+                  child: Column(
                     children: [
-                      SlideTransition(
-                        position: _slideAnimation,
-                        child: const Text(
-                          'TERCİH CEPTE',
-                          style: TextStyle(
-                            fontSize: 36,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 2,
-                            color: AppColors.primaryLight,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      FadeTransition(
-                        opacity: _fadeAnimation,
-                        child: const Text(
-                          'Geleceğine hazır mısın?',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 0.5,
-                            color: AppColors.textMain,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                      const Spacer(flex: 3),
+
+                      // Icon with pulse ring
+                      _buildIcon(),
+                      const SizedBox(height: 32),
+
+                      // Title
+                      _buildTitle(),
+                      const SizedBox(height: 12),
+
+                      // Subtitle
+                      _buildSubtitle(),
+
+                      const Spacer(flex: 3),
+
+                      // Bottom loader
+                      _buildBottomLoader(),
+                      const SizedBox(height: 48),
                     ],
                   ),
-                  const Spacer(),
-                  Column(
-                    children: [
-                      FadeTransition(
-                        opacity: _fadeAnimation,
-                        child: AnimatedBuilder(
-                          animation: _progressAnimation,
-                          builder: (context, child) {
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: LinearProgressIndicator(
-                                value: _progressAnimation.value,
-                                minHeight: 12,
-                                backgroundColor: AppColors.surfaceVariant,
-                                color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      FadeTransition(
-                        opacity: _fadeAnimation,
-                        child: const Text(
-                          'Üniversite yolculuğunuzda yanınızdayız',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w300,
-                            color: AppColors.textSubtle,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIcon() {
+    return AnimatedBuilder(
+      animation: _mainController,
+      builder: (context, child) {
+        return FadeTransition(
+          opacity: _iconFade,
+          child: Transform.scale(
+            scale: _iconScale.value,
+            child: SizedBox(
+              width: 120,
+              height: 120,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  // Pulse ring
+                  AnimatedBuilder(
+                    animation: _pulseController,
+                    builder: (context, child) {
+                      return Transform.scale(
+                        scale: _pulseScale.value,
+                        child: Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: AppColors.primaryLight.withValues(alpha: _pulseFade.value),
+                              width: 2,
+                            ),
                           ),
-                          textAlign: TextAlign.center,
                         ),
+                      );
+                    },
+                  ),
+                  // Glass circle
+                  Container(
+                    width: 88,
+                    height: 88,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          AppColors.primary.withValues(alpha: 0.3),
+                          AppColors.accent.withValues(alpha: 0.2),
+                        ],
                       ),
-                    ],
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.15),
+                        width: 1.5,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.primary.withValues(alpha: 0.3),
+                          blurRadius: 30,
+                          spreadRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.school_rounded,
+                      size: 40,
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),
             ),
           ),
+        );
+      },
+    );
+  }
+
+  Widget _buildTitle() {
+    return SlideTransition(
+      position: _titleSlide,
+      child: FadeTransition(
+        opacity: _titleFade,
+        child: Column(
+          children: [
+            ShaderMask(
+              shaderCallback: (bounds) => const LinearGradient(
+                colors: [
+                  Colors.white,
+                  Color(0xFFB8F0FF),
+                  AppColors.primaryLight,
+                ],
+              ).createShader(bounds),
+              child: const Text(
+                'TERCİH CEPTE',
+                style: TextStyle(
+                  fontSize: 34,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 3,
+                  color: Colors.white,
+                  height: 1,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildSubtitle() {
+    return FadeTransition(
+      opacity: _subtitleFade,
+      child: Text(
+        'Geleceğine hazır mısın?',
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          color: Colors.white.withValues(alpha: 0.6),
+          letterSpacing: 0.5,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
+  Widget _buildBottomLoader() {
+    return FadeTransition(
+      opacity: _bottomFade,
+      child: Column(
+        children: [
+          const _DotLoader(),
+          const SizedBox(height: 16),
+          Text(
+            'Üniversite yolculuğunuzda yanınızdayız',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: Colors.white.withValues(alpha: 0.35),
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// DOT LOADER — 3 pulsing dots
+// ---------------------------------------------------------------------------
+class _DotLoader extends StatefulWidget {
+  const _DotLoader();
+
+  @override
+  State<_DotLoader> createState() => _DotLoaderState();
+}
+
+class _DotLoaderState extends State<_DotLoader> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(3, (index) {
+            final delay = index * 0.2;
+            final t = (_controller.value - delay).clamp(0.0, 1.0);
+            final scale = 0.5 + 0.5 * math.sin(t * math.pi);
+            final opacity = 0.3 + 0.7 * math.sin(t * math.pi);
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Transform.scale(
+                scale: scale,
+                child: Container(
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.primaryLight.withValues(alpha: opacity),
+                  ),
+                ),
+              ),
+            );
+          }),
+        );
+      },
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// FLOATING ORBS — subtle background decoration
+// ---------------------------------------------------------------------------
+class _FloatingOrbs extends StatefulWidget {
+  const _FloatingOrbs();
+
+  @override
+  State<_FloatingOrbs> createState() => _FloatingOrbsState();
+}
+
+class _FloatingOrbsState extends State<_FloatingOrbs> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 6),
+      vsync: this,
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        final t = _controller.value * 2 * math.pi;
+        return Stack(
+          children: [
+            Positioned(
+              top: 120 + 20 * math.sin(t),
+              right: -40 + 15 * math.cos(t),
+              child: _orb(160, AppColors.primary.withValues(alpha: 0.08)),
+            ),
+            Positioned(
+              bottom: 200 + 15 * math.cos(t * 0.7),
+              left: -60 + 10 * math.sin(t * 0.7),
+              child: _orb(200, AppColors.accent.withValues(alpha: 0.06)),
+            ),
+            Positioned(
+              top: 300 + 10 * math.sin(t * 1.3),
+              left: 100 + 20 * math.cos(t * 1.3),
+              child: _orb(80, AppColors.info.withValues(alpha: 0.05)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _orb(double size, Color color) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: color,
+        boxShadow: [
+          BoxShadow(
+            color: color,
+            blurRadius: size * 0.6,
+            spreadRadius: size * 0.1,
+          ),
+        ],
       ),
     );
   }

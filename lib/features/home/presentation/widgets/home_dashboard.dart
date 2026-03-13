@@ -44,7 +44,7 @@ class HomeDashboard extends StatelessWidget {
                   icon: Icons.menu_book_rounded,
                   gradientColors: [
                     AppColors.info,
-                    const Color(0xFF2563EB), // slightly darker info
+                    const Color(0xFF1D4ED8),
                   ],
                 ),
               ),
