@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../app/router/route_paths.dart';
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
@@ -28,17 +28,17 @@ class ForumTopicCard extends StatelessWidget {
     }
   }
 
-  Color get _roleColor =>
-      topic.authorRole == 'Öğrenci' ? AppColors.success : AppColors.info;
-
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+    final roleColor = topic.authorRole == 'Öğrenci' ? colors.success : colors.info;
+
     return Container(
       margin: const EdgeInsets.only(bottom: AppSpacing.s),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: colors.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.border, width: 0.5),
+        border: Border.all(color: colors.border, width: 0.5),
       ),
       child: Material(
         color: Colors.transparent,
@@ -56,7 +56,7 @@ class ForumTopicCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Author row
-                _buildAuthorRow(),
+                _buildAuthorRow(colors, roleColor),
                 const SizedBox(height: AppSpacing.s),
 
                 // Title
@@ -65,6 +65,7 @@ class ForumTopicCard extends StatelessWidget {
                   style: AppTypography.bodyLg.copyWith(
                     fontWeight: FontWeight.w600,
                     height: 1.3,
+                    color: colors.textMain,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -77,14 +78,14 @@ class ForumTopicCard extends StatelessWidget {
                     Icon(
                       Icons.school_rounded,
                       size: 14,
-                      color: AppColors.primary.withValues(alpha: 0.8),
+                      color: colors.primary.withValues(alpha: 0.8),
                     ),
                     const SizedBox(width: 4),
                     Expanded(
                       child: Text(
                         topic.universityName,
                         style: AppTypography.bodySm.copyWith(
-                          color: AppColors.primary,
+                          color: colors.primary,
                           fontWeight: FontWeight.w500,
                         ),
                         maxLines: 1,
@@ -96,7 +97,7 @@ class ForumTopicCard extends StatelessWidget {
                 const SizedBox(height: AppSpacing.s),
 
                 // Tags + Stats
-                _buildFooter(),
+                _buildFooter(colors),
               ],
             ),
           ),
@@ -105,7 +106,7 @@ class ForumTopicCard extends StatelessWidget {
     );
   }
 
-  Widget _buildAuthorRow() {
+  Widget _buildAuthorRow(AppColorsExtension colors, Color roleColor) {
     return Row(
       children: [
         // Avatar with gradient border
@@ -114,16 +115,16 @@ class ForumTopicCard extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: LinearGradient(
-              colors: [_roleColor, _roleColor.withValues(alpha: 0.5)],
+              colors: [roleColor, roleColor.withValues(alpha: 0.5)],
             ),
           ),
           child: CircleAvatar(
             radius: 15,
-            backgroundColor: AppColors.surfaceVariant,
+            backgroundColor: colors.surfaceVariant,
             child: Text(
               topic.authorName.substring(0, 1).toUpperCase(),
               style: AppTypography.bodySm.copyWith(
-                color: AppColors.textMain,
+                color: colors.textMain,
                 fontWeight: FontWeight.bold,
                 fontSize: 13,
               ),
@@ -141,12 +142,13 @@ class ForumTopicCard extends StatelessWidget {
                 topic.authorName,
                 style: AppTypography.bodySm.copyWith(
                   fontWeight: FontWeight.w600,
+                  color: colors.textMain,
                 ),
               ),
               Text(
                 topic.authorRole,
                 style: AppTypography.caption.copyWith(
-                  color: _roleColor,
+                  color: roleColor,
                   fontWeight: FontWeight.w500,
                   fontSize: 10,
                 ),
@@ -159,13 +161,13 @@ class ForumTopicCard extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
           decoration: BoxDecoration(
-            color: AppColors.surfaceVariant,
+            color: colors.surfaceVariant,
             borderRadius: BorderRadius.circular(AppRadius.sm),
           ),
           child: Text(
             _formatDate(topic.lastActivityDate),
             style: AppTypography.caption.copyWith(
-              color: AppColors.textSubtle,
+              color: colors.textSubtle,
               fontSize: 10,
             ),
           ),
@@ -174,7 +176,7 @@ class ForumTopicCard extends StatelessWidget {
     );
   }
 
-  Widget _buildFooter() {
+  Widget _buildFooter(AppColorsExtension colors) {
     return Row(
       children: [
         // Tags (max 2)
@@ -186,17 +188,17 @@ class ForumTopicCard extends StatelessWidget {
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.08),
+                  color: colors.primary.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(AppRadius.sm),
                   border: Border.all(
-                    color: AppColors.primary.withValues(alpha: 0.15),
+                    color: colors.primary.withValues(alpha: 0.15),
                     width: 0.5,
                   ),
                 ),
                 child: Text(
                   '#$tag',
                   style: AppTypography.caption.copyWith(
-                    color: AppColors.primary,
+                    color: colors.primary,
                     fontWeight: FontWeight.w500,
                     fontSize: 10,
                   ),
@@ -207,31 +209,31 @@ class ForumTopicCard extends StatelessWidget {
         ),
 
         // Stats
-        _buildStat(Icons.visibility_outlined, topic.viewCount),
+        _buildStat(Icons.visibility_outlined, topic.viewCount, colors),
         const SizedBox(width: AppSpacing.s),
-        _buildStat(Icons.chat_bubble_outline_rounded, topic.replyCount),
+        _buildStat(Icons.chat_bubble_outline_rounded, topic.replyCount, colors),
 
         // Bookmark
         const SizedBox(width: AppSpacing.xs),
         Icon(
           topic.isSaved ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
           size: 18,
-          color: topic.isSaved ? AppColors.warning : AppColors.textSubtle,
+          color: topic.isSaved ? colors.warning : colors.textSubtle,
         ),
       ],
     );
   }
 
-  Widget _buildStat(IconData icon, int count) {
+  Widget _buildStat(IconData icon, int count, AppColorsExtension colors) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 14, color: AppColors.textSubtle),
+        Icon(icon, size: 14, color: colors.textSubtle),
         const SizedBox(width: 3),
         Text(
           count.toString(),
           style: AppTypography.caption.copyWith(
-            color: AppColors.textSubtle,
+            color: colors.textSubtle,
             fontWeight: FontWeight.w500,
             fontSize: 11,
           ),

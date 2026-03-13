@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 
 class OnboardDotsIndicator extends StatelessWidget {
   final int count;
@@ -14,6 +14,8 @@ class OnboardDotsIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(count, (index) {
@@ -26,7 +28,7 @@ class OnboardDotsIndicator extends StatelessWidget {
           height: 8,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: isActive ? AppColors.primary : AppColors.surfaceHighlight,
+            color: isActive ? colors.primary : colors.surfaceHighlight,
           ),
         );
       }),

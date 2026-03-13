@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../theme/app_colors_extension.dart';
 import '../theme/app_radius.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
@@ -17,12 +17,14 @@ class AppToast {
     Duration duration = const Duration(seconds: 3),
   }) {
     final overlay = Overlay.of(context);
+    final colors = context.appColors;
     late final OverlayEntry entry;
 
     entry = OverlayEntry(
       builder: (context) => _AppToastWidget(
         message: message,
         type: type,
+        colors: colors,
         duration: duration,
         onDismiss: () => entry.remove(),
       ),
@@ -35,12 +37,14 @@ class AppToast {
 class _AppToastWidget extends StatefulWidget {
   final String message;
   final AppToastType type;
+  final AppColorsExtension colors;
   final Duration duration;
   final VoidCallback onDismiss;
 
   const _AppToastWidget({
     required this.message,
     required this.type,
+    required this.colors,
     required this.duration,
     required this.onDismiss,
   });
@@ -92,10 +96,10 @@ class _AppToastWidgetState extends State<_AppToastWidget>
 
   Color get _backgroundColor {
     return switch (widget.type) {
-      AppToastType.success => AppColors.success,
-      AppToastType.error => AppColors.error,
-      AppToastType.info => AppColors.info,
-      AppToastType.warning => AppColors.warning,
+      AppToastType.success => widget.colors.success,
+      AppToastType.error => widget.colors.error,
+      AppToastType.info => widget.colors.info,
+      AppToastType.warning => widget.colors.warning,
     };
   }
 

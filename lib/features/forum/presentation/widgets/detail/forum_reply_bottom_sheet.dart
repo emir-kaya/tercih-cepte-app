@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_radius.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
@@ -64,14 +64,15 @@ class _ForumReplyBottomSheetState extends State<ForumReplyBottomSheet> {
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
     final bottomPadding = MediaQuery.of(context).padding.bottom;
+    final colors = context.appColors;
 
     return Container(
       padding: EdgeInsets.only(
         bottom: bottomInset > 0 ? bottomInset : bottomPadding,
       ),
-      decoration: const BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
+      decoration: BoxDecoration(
+        color: colors.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -84,7 +85,7 @@ class _ForumReplyBottomSheetState extends State<ForumReplyBottomSheet> {
               width: 36,
               height: 4,
               decoration: BoxDecoration(
-                color: AppColors.surfaceHighlight,
+                color: colors.surfaceHighlight,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -96,11 +97,11 @@ class _ForumReplyBottomSheetState extends State<ForumReplyBottomSheet> {
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.l),
             child: Row(
               children: [
-                const Icon(Icons.reply_rounded, color: AppColors.primary, size: 20),
+                Icon(Icons.reply_rounded, color: colors.primary, size: 20),
                 const SizedBox(width: AppSpacing.xs),
                 Text(
                   'Yanıt Yaz',
-                  style: AppTypography.bodyLg.copyWith(fontWeight: FontWeight.bold),
+                  style: AppTypography.bodyLg.copyWith(fontWeight: FontWeight.bold, color: colors.textMain),
                 ),
               ],
             ),
@@ -113,14 +114,14 @@ class _ForumReplyBottomSheetState extends State<ForumReplyBottomSheet> {
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.l),
               child: Row(
                 children: [
-                  const Icon(Icons.subdirectory_arrow_right_rounded,
-                      size: 14, color: AppColors.textSubtle),
+                  Icon(Icons.subdirectory_arrow_right_rounded,
+                      size: 14, color: colors.textSubtle),
                   const SizedBox(width: 4),
                   Expanded(
                     child: Text(
                       '${widget.replyingTo} adlı kullanıcıya yanıt',
                       style: AppTypography.caption.copyWith(
-                        color: AppColors.textSubtle,
+                        color: colors.textSubtle,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -132,7 +133,7 @@ class _ForumReplyBottomSheetState extends State<ForumReplyBottomSheet> {
           ],
 
           const SizedBox(height: AppSpacing.s),
-          const Divider(height: 1, color: AppColors.divider),
+          Divider(height: 1, color: colors.divider),
           const SizedBox(height: AppSpacing.s),
 
           // Text field
@@ -145,12 +146,12 @@ class _ForumReplyBottomSheetState extends State<ForumReplyBottomSheet> {
                 focusNode: _focusNode,
                 maxLines: null,
                 maxLength: 1000,
-                style: AppTypography.bodyMd.copyWith(color: AppColors.textMain),
+                style: AppTypography.bodyMd.copyWith(color: colors.textMain),
                 onChanged: (_) => setState(() {}),
                 decoration: InputDecoration(
                   hintText: 'Yanıtınızı yazın...',
                   hintStyle: AppTypography.bodyMd.copyWith(
-                    color: AppColors.textSubtle.withValues(alpha: 0.6),
+                    color: colors.textSubtle.withValues(alpha: 0.6),
                   ),
                   border: InputBorder.none,
                   counterText: '',
@@ -174,7 +175,7 @@ class _ForumReplyBottomSheetState extends State<ForumReplyBottomSheet> {
                 Text(
                   '${_controller.text.length}/1000',
                   style: AppTypography.caption.copyWith(
-                    color: AppColors.textSubtle.withValues(alpha: 0.5),
+                    color: colors.textSubtle.withValues(alpha: 0.5),
                   ),
                 ),
                 const Spacer(),
@@ -189,11 +190,11 @@ class _ForumReplyBottomSheetState extends State<ForumReplyBottomSheet> {
                     ),
                     decoration: BoxDecoration(
                       gradient: _hasContent
-                          ? const LinearGradient(
-                              colors: [AppColors.primary, AppColors.accent],
+                          ? LinearGradient(
+                              colors: [colors.primary, colors.accent],
                             )
                           : null,
-                      color: _hasContent ? null : AppColors.surfaceVariant,
+                      color: _hasContent ? null : colors.surfaceVariant,
                       borderRadius: BorderRadius.circular(AppRadius.circular),
                     ),
                     child: Row(
@@ -202,13 +203,13 @@ class _ForumReplyBottomSheetState extends State<ForumReplyBottomSheet> {
                         Icon(
                           Icons.send_rounded,
                           size: 16,
-                          color: _hasContent ? Colors.white : AppColors.textSubtle,
+                          color: _hasContent ? Colors.white : colors.textSubtle,
                         ),
                         const SizedBox(width: 6),
                         Text(
                           'Gönder',
                           style: AppTypography.bodySm.copyWith(
-                            color: _hasContent ? Colors.white : AppColors.textSubtle,
+                            color: _hasContent ? Colors.white : colors.textSubtle,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

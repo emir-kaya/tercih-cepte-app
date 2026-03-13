@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
@@ -27,11 +27,13 @@ class OnboardBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.l),
-      child: _isLastPage ? _buildGetStartedButton() : _buildNavRow(),
+      child: _isLastPage ? _buildGetStartedButton(context) : _buildNavRow(context),
     );
   }
 
-  Widget _buildNavRow() {
+  Widget _buildNavRow(BuildContext context) {
+    final colors = context.appColors;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -40,7 +42,7 @@ class OnboardBottomBar extends StatelessWidget {
           child: Text(
             'Atla',
             style: AppTypography.bodyMd.copyWith(
-              color: AppColors.textSubtle,
+              color: colors.textSubtle,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -51,13 +53,13 @@ class OnboardBottomBar extends StatelessWidget {
             width: 56,
             height: 56,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [AppColors.primary, AppColors.accent],
+              gradient: LinearGradient(
+                colors: [colors.primary, colors.accent],
               ),
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.primary.withValues(alpha: 0.35),
+                  color: colors.primary.withValues(alpha: 0.35),
                   blurRadius: 16,
                   offset: const Offset(0, 4),
                 ),
@@ -74,19 +76,21 @@ class OnboardBottomBar extends StatelessWidget {
     );
   }
 
-  Widget _buildGetStartedButton() {
+  Widget _buildGetStartedButton(BuildContext context) {
+    final colors = context.appColors;
+
     return SizedBox(
       width: double.infinity,
       height: 56,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [AppColors.primaryDark, AppColors.primary, AppColors.accent],
+          gradient: LinearGradient(
+            colors: [colors.primaryDark, colors.primary, colors.accent],
           ),
           borderRadius: BorderRadius.circular(AppRadius.lg),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withValues(alpha: 0.35),
+              color: colors.primary.withValues(alpha: 0.35),
               blurRadius: 16,
               offset: const Offset(0, 4),
             ),

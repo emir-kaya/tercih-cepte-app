@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../theme/app_colors_extension.dart';
 import '../theme/app_typography.dart';
 
 class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -19,10 +19,12 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return AppBar(
       title: Text(
         title,
-        style: AppTypography.h3.copyWith(color: AppColors.textMain),
+        style: AppTypography.h3.copyWith(color: colors.textMain),
       ),
       actions: actions,
       centerTitle: centerTitle,

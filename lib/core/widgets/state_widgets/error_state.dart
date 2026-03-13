@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/app_colors.dart';
+import '../../theme/app_colors_extension.dart';
 import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
 import '../app_button.dart';
@@ -17,6 +17,8 @@ class ErrorState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.l),
@@ -24,21 +26,21 @@ class ErrorState extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Icon(
+            Icon(
               Icons.error_outline_rounded,
               size: 64,
-              color: AppColors.error,
+              color: colors.error,
             ),
             const SizedBox(height: AppSpacing.m),
-            const Text(
+            Text(
               'Bir Hata Oluştu',
-              style: AppTypography.h3,
+              style: AppTypography.h3.copyWith(color: colors.textMain),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.s),
             Text(
               message,
-              style: AppTypography.bodyMd.copyWith(color: AppColors.textSubtle),
+              style: AppTypography.bodyMd.copyWith(color: colors.textSubtle),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.l),

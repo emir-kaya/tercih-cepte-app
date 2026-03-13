@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
@@ -13,12 +13,14 @@ class AcademicStaffSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     final items = [
-      _AcademicItem('Profesör', staff.professor, Icons.star_rounded, const [AppColors.warning, Color(0xFFD97706)]),
-      _AcademicItem('Doçent', staff.associateProfessor, Icons.workspace_premium_rounded, const [AppColors.primary, AppColors.primaryDark]),
-      _AcademicItem('Doktor', staff.doctor, Icons.school_rounded, const [AppColors.accent, AppColors.accentDark]),
-      _AcademicItem('Ar. Gör.', staff.researchAssistant, Icons.science_rounded, const [AppColors.info, Color(0xFF1D4ED8)]),
-      _AcademicItem('Öğr. Gör.', staff.lecturer, Icons.record_voice_over_rounded, const [AppColors.success, Color(0xFF16A34A)]),
+      _AcademicItem('Profesör', staff.professor, Icons.star_rounded, [colors.warning, const Color(0xFFD97706)]),
+      _AcademicItem('Doçent', staff.associateProfessor, Icons.workspace_premium_rounded, [colors.primary, colors.primaryDark]),
+      _AcademicItem('Doktor', staff.doctor, Icons.school_rounded, [colors.accent, colors.accentDark]),
+      _AcademicItem('Ar. Gör.', staff.researchAssistant, Icons.science_rounded, [colors.info, const Color(0xFF1D4ED8)]),
+      _AcademicItem('Öğr. Gör.', staff.lecturer, Icons.record_voice_over_rounded, [colors.success, const Color(0xFF16A34A)]),
     ];
 
     final total = staff.professor + staff.associateProfessor + staff.doctor + staff.researchAssistant + staff.lecturer;
@@ -30,17 +32,17 @@ class AcademicStaffSection extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
           child: Row(
             children: [
-              const Text('Akademik Kadro', style: AppTypography.h3),
+              Text('Akademik Kadro', style: AppTypography.h3.copyWith(color: colors.textMain)),
               const Spacer(),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.surfaceVariant,
+                  color: colors.surfaceVariant,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   'Toplam $total',
-                  style: AppTypography.label.copyWith(color: AppColors.primaryLight),
+                  style: AppTypography.label.copyWith(color: colors.primaryLight),
                 ),
               ),
             ],
@@ -53,7 +55,7 @@ class AcademicStaffSection extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
             scrollDirection: Axis.horizontal,
             itemCount: items.length,
-            separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.s),
+            separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.s),
             itemBuilder: (context, index) {
               final item = items[index];
               return _AcademicCard(item: item);
@@ -81,11 +83,13 @@ class _AcademicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return Container(
       width: 120,
       padding: const EdgeInsets.all(AppSpacing.m),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: colors.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: item.gradient.first.withValues(alpha: 0.25),
@@ -106,11 +110,11 @@ class _AcademicCard extends StatelessWidget {
           const Spacer(),
           Text(
             item.count.toString(),
-            style: AppTypography.h2.copyWith(fontWeight: FontWeight.bold),
+            style: AppTypography.h2.copyWith(fontWeight: FontWeight.bold, color: colors.textMain),
           ),
           Text(
             item.title,
-            style: AppTypography.caption.copyWith(color: AppColors.textSubtle),
+            style: AppTypography.caption.copyWith(color: colors.textSubtle),
           ),
         ],
       ),

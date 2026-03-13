@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
 import '../../../../../core/widgets/app_card.dart';
@@ -17,6 +17,8 @@ class ForumPostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return AppCard(
       padding: const EdgeInsets.all(AppSpacing.m),
       child: Column(
@@ -27,10 +29,10 @@ class ForumPostCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 20,
-                backgroundColor: AppColors.primary.withValues(alpha: 0.2),
+                backgroundColor: colors.primary.withValues(alpha: 0.2),
                 child: Text(
                   topic.authorName.isNotEmpty ? topic.authorName.substring(0, 1) : '?',
-                  style: AppTypography.h3.copyWith(color: AppColors.primary),
+                  style: AppTypography.h3.copyWith(color: colors.primary),
                 ),
               ),
               const SizedBox(width: AppSpacing.s),
@@ -40,41 +42,41 @@ class ForumPostCard extends StatelessWidget {
                   children: [
                     Text(
                       topic.authorName,
-                      style: AppTypography.bodyMd.copyWith(fontWeight: FontWeight.w600),
+                      style: AppTypography.bodyMd.copyWith(fontWeight: FontWeight.w600, color: colors.textMain),
                     ),
                     Text(
                       topic.authorRole,
-                      style: AppTypography.caption.copyWith(color: AppColors.textSubtle),
+                      style: AppTypography.caption.copyWith(color: colors.textSubtle),
                     ),
                   ],
                 ),
               ),
               AppChip(
                 label: topic.universityName,
-                backgroundColor: AppColors.primary.withValues(alpha: 0.1),
-                textColor: AppColors.primaryLight,
+                backgroundColor: colors.primary.withValues(alpha: 0.1),
+                textColor: colors.primaryLight,
               ),
             ],
           ),
           const SizedBox(height: AppSpacing.m),
-          
+
           // Title
           Text(
             topic.title,
-            style: AppTypography.h3,
+            style: AppTypography.h3.copyWith(color: colors.textMain),
           ),
           const SizedBox(height: AppSpacing.s),
-          
+
           // Content
           Text(
             topic.content,
             style: AppTypography.bodyMd.copyWith(
               height: 1.5,
-              color: AppColors.textMain.withValues(alpha: 0.9),
+              color: colors.textMain.withValues(alpha: 0.9),
             ),
           ),
           const SizedBox(height: AppSpacing.m),
-          
+
           // Tags
           Wrap(
             spacing: AppSpacing.xs,
@@ -82,14 +84,14 @@ class ForumPostCard extends StatelessWidget {
             children: topic.tags
                 .map((tag) => AppChip(
                       label: tag,
-                      backgroundColor: AppColors.surfaceVariant,
-                      textColor: AppColors.textSubtle,
+                      backgroundColor: colors.surfaceVariant,
+                      textColor: colors.textSubtle,
                     ))
                 .toList(),
           ),
-          
-          const Divider(height: AppSpacing.xl, color: AppColors.border),
-          
+
+          Divider(height: AppSpacing.xl, color: colors.border),
+
           // Action Buttons
           ForumActionButtons(
             isLiked: topic.isLiked,

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/di/injector.dart';
 import '../../../../app/router/route_paths.dart';
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
@@ -37,12 +37,13 @@ class _ForumContentView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final topPadding = MediaQuery.of(context).padding.top;
+    final colors = context.appColors;
 
     return Column(
       children: [
         // Fixed header + search bar
         Container(
-          color: AppColors.background,
+          color: colors.background,
           padding: EdgeInsets.only(
             top: topPadding + AppSpacing.m,
             left: AppSpacing.l,
@@ -58,21 +59,21 @@ class _ForumContentView extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Forum', style: AppTypography.h1),
+                      Text('Forum', style: AppTypography.h1.copyWith(color: colors.textMain)),
                       const SizedBox(height: AppSpacing.xxs),
                       Text(
                         'Tartış, sor, keşfet',
                         style: AppTypography.bodyMd.copyWith(
-                          color: AppColors.textSubtle,
+                          color: colors.textSubtle,
                         ),
                       ),
                     ],
                   ),
-                  _buildNewTopicButton(context),
+                  _buildNewTopicButton(context, colors),
                 ],
               ),
               const SizedBox(height: AppSpacing.m),
-              _buildSearchBar(),
+              _buildSearchBar(colors),
             ],
           ),
         ),
@@ -80,8 +81,8 @@ class _ForumContentView extends StatelessWidget {
         // Scrollable topic list
         Expanded(
           child: RefreshIndicator(
-            color: AppColors.primary,
-            backgroundColor: AppColors.surface,
+            color: colors.primary,
+            backgroundColor: colors.surface,
             onRefresh: () async {
               context.read<ForumBloc>().add(RefreshForumData());
             },
@@ -135,16 +136,16 @@ class _ForumContentView extends StatelessWidget {
     );
   }
 
-  Widget _buildNewTopicButton(BuildContext context) {
+  Widget _buildNewTopicButton(BuildContext context, AppColorsExtension colors) {
     return Container(
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [AppColors.primary, AppColors.accent],
+        gradient: LinearGradient(
+          colors: [colors.primary, colors.accent],
         ),
         borderRadius: BorderRadius.circular(AppRadius.md),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.3),
+            color: colors.primary.withValues(alpha: 0.3),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -178,21 +179,21 @@ class _ForumContentView extends StatelessWidget {
     );
   }
 
-  Widget _buildSearchBar() {
+  Widget _buildSearchBar(AppColorsExtension colors) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surfaceVariant,
+        color: colors.surfaceVariant,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.border, width: 0.5),
+        border: Border.all(color: colors.border, width: 0.5),
       ),
       child: TextFormField(
-        style: AppTypography.bodyMd,
+        style: AppTypography.bodyMd.copyWith(color: colors.textMain),
         decoration: InputDecoration(
           hintText: 'Konu, üniversite veya etiket ara...',
-          hintStyle: AppTypography.bodyMd.copyWith(color: AppColors.textSubtle),
-          prefixIcon: const Padding(
-            padding: EdgeInsets.only(left: 14, right: 10),
-            child: Icon(Icons.search_rounded, color: AppColors.textSubtle, size: 22),
+          hintStyle: AppTypography.bodyMd.copyWith(color: colors.textSubtle),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.only(left: 14, right: 10),
+            child: Icon(Icons.search_rounded, color: colors.textSubtle, size: 22),
           ),
           prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
           filled: false,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
 
@@ -26,6 +26,8 @@ class ForumActionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.s),
       child: Row(
@@ -36,14 +38,14 @@ class ForumActionButtons extends StatelessWidget {
               _buildActionButton(
                 icon: isLiked ? Icons.thumb_up_alt_rounded : Icons.thumb_up_alt_outlined,
                 label: likeCount > 0 ? '$likeCount' : 'Beğen',
-                color: isLiked ? AppColors.primary : AppColors.textSubtle,
+                color: isLiked ? colors.primary : colors.textSubtle,
                 onTap: onLikePressed,
               ),
               const SizedBox(width: AppSpacing.m),
               _buildActionButton(
                 icon: Icons.chat_bubble_outline_rounded,
                 label: 'Yanıtla',
-                color: AppColors.textSubtle,
+                color: colors.textSubtle,
                 onTap: onReplyPressed,
               ),
             ],
@@ -52,13 +54,13 @@ class ForumActionButtons extends StatelessWidget {
             children: [
               _buildActionButton(
                 icon: isSaved ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
-                color: isSaved ? AppColors.primary : AppColors.textSubtle,
+                color: isSaved ? colors.primary : colors.textSubtle,
                 onTap: onSavePressed,
               ),
               const SizedBox(width: AppSpacing.m),
               _buildActionButton(
                 icon: Icons.share_rounded,
-                color: AppColors.textSubtle,
+                color: colors.textSubtle,
                 onTap: onSharePressed,
               ),
             ],

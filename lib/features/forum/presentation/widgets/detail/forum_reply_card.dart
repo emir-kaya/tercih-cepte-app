@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_radius.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
@@ -17,11 +17,13 @@ class ForumReplyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.m, vertical: AppSpacing.xs),
       padding: const EdgeInsets.all(AppSpacing.m),
       decoration: BoxDecoration(
-        color: AppColors.surfaceVariant.withValues(alpha: 0.5),
+        color: colors.surfaceVariant.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(AppRadius.md),
       ),
       child: Column(
@@ -31,11 +33,11 @@ class ForumReplyCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 16,
-                backgroundColor: AppColors.primary.withValues(alpha: 0.1),
+                backgroundColor: colors.primary.withValues(alpha: 0.1),
                 child: Text(
                   reply.authorName.isNotEmpty ? reply.authorName.substring(0, 1) : '?',
                   style: AppTypography.bodyMd.copyWith(
-                    color: AppColors.primaryLight,
+                    color: colors.primaryLight,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -47,18 +49,18 @@ class ForumReplyCard extends StatelessWidget {
                   children: [
                     Text(
                       reply.authorName,
-                      style: AppTypography.bodyMd.copyWith(fontWeight: FontWeight.w600),
+                      style: AppTypography.bodyMd.copyWith(fontWeight: FontWeight.w600, color: colors.textMain),
                     ),
                     Text(
                       reply.authorRole,
-                      style: AppTypography.caption.copyWith(color: AppColors.textSubtle),
+                      style: AppTypography.caption.copyWith(color: colors.textSubtle),
                     ),
                   ],
                 ),
               ),
               Text(
                 _formatTimeAgo(reply.createdAt),
-                style: AppTypography.caption.copyWith(color: AppColors.textSubtle),
+                style: AppTypography.caption.copyWith(color: colors.textSubtle),
               ),
             ],
           ),
@@ -67,7 +69,7 @@ class ForumReplyCard extends StatelessWidget {
             reply.content,
             style: AppTypography.bodyMd.copyWith(
               height: 1.5,
-              color: AppColors.textMain.withValues(alpha: 0.9),
+              color: colors.textMain.withValues(alpha: 0.9),
             ),
           ),
           const SizedBox(height: AppSpacing.m),
@@ -84,13 +86,13 @@ class ForumReplyCard extends StatelessWidget {
                       Icon(
                         reply.isLiked ? Icons.thumb_up_alt_rounded : Icons.thumb_up_alt_outlined,
                         size: 16,
-                        color: reply.isLiked ? AppColors.primary : AppColors.textSubtle,
+                        color: reply.isLiked ? colors.primary : colors.textSubtle,
                       ),
                       const SizedBox(width: AppSpacing.xs),
                       Text(
                         '${reply.likeCount}',
                         style: AppTypography.caption.copyWith(
-                          color: reply.isLiked ? AppColors.primary : AppColors.textSubtle,
+                          color: reply.isLiked ? colors.primary : colors.textSubtle,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -110,16 +112,16 @@ class ForumReplyCard extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.reply_rounded,
                         size: 16,
-                        color: AppColors.textSubtle,
+                        color: colors.textSubtle,
                       ),
                       const SizedBox(width: AppSpacing.xs),
                       Text(
                         'Yanıtla',
                         style: AppTypography.caption.copyWith(
-                          color: AppColors.textSubtle,
+                          color: colors.textSubtle,
                           fontWeight: FontWeight.w600,
                         ),
                       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../theme/app_colors_extension.dart';
 import '../theme/app_radius.dart';
 import '../theme/app_typography.dart';
 
@@ -22,13 +22,15 @@ class AppChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = isSelected 
-        ? AppColors.primary 
-        : (backgroundColor ?? AppColors.surfaceVariant);
-    
+    final colors = context.appColors;
+
+    final bgColor = isSelected
+        ? colors.primary
+        : (backgroundColor ?? colors.surfaceVariant);
+
     final txtColor = isSelected
-        ? AppColors.textInverse
-        : (textColor ?? AppColors.textMain);
+        ? colors.textInverse
+        : (textColor ?? colors.textMain);
 
     return InkWell(
       onTap: onTap,
@@ -39,7 +41,7 @@ class AppChip extends StatelessWidget {
           color: bgColor,
           borderRadius: BorderRadius.circular(AppRadius.xl),
           border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.border,
+            color: isSelected ? colors.primary : colors.border,
             width: 1,
           ),
         ),

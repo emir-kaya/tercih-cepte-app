@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../app/router/route_paths.dart';
-import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
 import '../../../../../core/widgets/app_text_field.dart';
@@ -12,6 +12,8 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m, vertical: AppSpacing.s),
       child: Column(
@@ -23,18 +25,18 @@ class HomeHeader extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Merhaba, Emir 👋', style: AppTypography.h3),
+                  Text('Merhaba, Emir 👋', style: AppTypography.h3.copyWith(color: colors.textMain)),
                   const SizedBox(height: AppSpacing.xs),
                   Text(
                     'Bugün hedefine bir adım daha yaklaş.',
-                    style: AppTypography.bodyMd.copyWith(color: AppColors.textSubtle),
+                    style: AppTypography.bodyMd.copyWith(color: colors.textSubtle),
                   ),
                 ],
               ),
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 24,
-                backgroundColor: AppColors.surfaceVariant,
-                child: Icon(Icons.person_outline, color: AppColors.textMain),
+                backgroundColor: colors.surfaceVariant,
+                child: Icon(Icons.person_outline, color: colors.textMain),
               ),
             ],
           ),
@@ -43,10 +45,10 @@ class HomeHeader extends StatelessWidget {
             onTap: () {
               context.go('${RoutePaths.home}/${RoutePaths.search}');
             },
-            child: const AbsorbPointer(
+            child: AbsorbPointer(
               child: AppTextField(
                 hintText: 'Üniversite, bölüm, ders ara...',
-                prefixIcon: Icon(Icons.search_rounded, color: AppColors.textSubtle),
+                prefixIcon: Icon(Icons.search_rounded, color: colors.textSubtle),
               ),
             ),
           ),

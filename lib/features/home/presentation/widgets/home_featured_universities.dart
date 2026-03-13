@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../app/router/route_paths.dart';
-import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
 import '../../../../../core/widgets/app_card.dart';
@@ -20,12 +20,14 @@ class HomeFeaturedUniversities extends StatelessWidget {
   Widget build(BuildContext context) {
     if (universities.isEmpty) return const SizedBox.shrink();
 
+    final colors = context.appColors;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.m),
-          child: Text('Öne Çıkan Üniversiteler', style: AppTypography.h3),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
+          child: Text('Öne Çıkan Üniversiteler', style: AppTypography.h3.copyWith(color: colors.textMain)),
         ),
         const SizedBox(height: AppSpacing.m),
         SizedBox(
@@ -56,10 +58,10 @@ class HomeFeaturedUniversities extends StatelessWidget {
                             width: 48,
                             height: 48,
                             decoration: BoxDecoration(
-                              color: AppColors.surfaceVariant,
+                              color: colors.surfaceVariant,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: const Icon(Icons.school_outlined, color: AppColors.primary),
+                            child: Icon(Icons.school_outlined, color: colors.primary),
                           ),
                           const SizedBox(width: AppSpacing.s),
                           Expanded(
@@ -68,13 +70,13 @@ class HomeFeaturedUniversities extends StatelessWidget {
                               children: [
                                 Text(
                                   item.name,
-                                  style: AppTypography.bodyLg.copyWith(fontWeight: FontWeight.bold),
+                                  style: AppTypography.bodyLg.copyWith(fontWeight: FontWeight.bold, color: colors.textMain),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
                                   item.city,
-                                  style: AppTypography.bodySm.copyWith(color: AppColors.textSubtle),
+                                  style: AppTypography.bodySm.copyWith(color: colors.textSubtle),
                                 ),
                               ],
                             ),
@@ -84,7 +86,7 @@ class HomeFeaturedUniversities extends StatelessWidget {
                       const Spacer(),
                       Text(
                         item.shortDescription,
-                        style: AppTypography.bodySm,
+                        style: AppTypography.bodySm.copyWith(color: colors.textMain),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -94,11 +96,11 @@ class HomeFeaturedUniversities extends StatelessWidget {
                         children: [
                           Text(
                             item.type,
-                            style: AppTypography.label.copyWith(color: AppColors.primary),
+                            style: AppTypography.label.copyWith(color: colors.primary),
                           ),
                           Text(
                             item.scoreRange,
-                            style: AppTypography.label,
+                            style: AppTypography.label.copyWith(color: colors.textSubtle),
                           ),
                         ],
                       ),

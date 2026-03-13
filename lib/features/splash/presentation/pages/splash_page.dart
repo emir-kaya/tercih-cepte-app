@@ -1,12 +1,14 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/di/injector.dart';
 import '../../../../app/router/route_paths.dart';
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
+import '../../../../core/theme/theme_cubit.dart';
 import '../bloc/splash_bloc.dart';
 import '../bloc/splash_event.dart';
 import '../bloc/splash_state.dart';
@@ -136,6 +138,18 @@ class _SplashPageState extends State<SplashPage>
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+    final isDark = context.read<ThemeCubit>().isDark;
+
+    // Status bar adapts to splash background
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+        statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
+      ),
+    );
+
     return BlocProvider(
       create: (context) => getIt<SplashBloc>()..add(const SplashStarted()),
       child: BlocListener<SplashBloc, SplashState>(
@@ -160,21 +174,27 @@ class _SplashPageState extends State<SplashPage>
           body: Container(
             width: double.infinity,
             height: double.infinity,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF07101A),
-                  Color(0xFF0C1820),
-                  Color(0xFF0A1A1F),
-                ],
+                colors: isDark
+                    ? const [
+                        Color(0xFF07101A),
+                        Color(0xFF0C1820),
+                        Color(0xFF0A1A1F),
+                      ]
+                    : [
+                        colors.background,
+                        const Color(0xFFE0F7FA),
+                        const Color(0xFFF0FDFA),
+                      ],
               ),
             ),
             child: Stack(
               children: [
                 // Floating orbs
-                const _FloatingOrbs(),
+                _FloatingOrbs(isDark: isDark),
 
                 // Main content
                 SafeArea(
@@ -183,20 +203,20 @@ class _SplashPageState extends State<SplashPage>
                       const Spacer(flex: 3),
 
                       // Icon with pulse ring
-                      _buildIcon(),
+                      _buildIcon(colors, isDark),
                       const SizedBox(height: 32),
 
                       // Title
-                      _buildTitle(),
+                      _buildTitle(colors, isDark),
                       const SizedBox(height: 12),
 
                       // Subtitle
-                      _buildSubtitle(),
+                      _buildSubtitle(colors, isDark),
 
                       const Spacer(flex: 3),
 
                       // Bottom loader
-                      _buildBottomLoader(),
+                      _buildBottomLoader(colors, isDark),
                       const SizedBox(height: 48),
                     ],
                   ),
@@ -209,7 +229,7 @@ class _SplashPageState extends State<SplashPage>
     );
   }
 
-  Widget _buildIcon() {
+  Widget _buildIcon(AppColorsExtension colors, bool isDark) {
     return AnimatedBuilder(
       animation: _mainController,
       builder: (context, child) {
@@ -235,7 +255,7 @@ class _SplashPageState extends State<SplashPage>
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: AppColors.primaryLight.withValues(alpha: _pulseFade.value),
+                              color: colors.primaryLight.withValues(alpha: _pulseFade.value),
                               width: 2,
                             ),
                           ),
@@ -252,27 +272,34 @@ class _SplashPageState extends State<SplashPage>
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: [
-                          AppColors.primary.withValues(alpha: 0.3),
-                          AppColors.accent.withValues(alpha: 0.2),
-                        ],
+                        colors: isDark
+                            ? [
+                                colors.primary.withValues(alpha: 0.3),
+                                colors.accent.withValues(alpha: 0.2),
+                              ]
+                            : [
+                                colors.primary.withValues(alpha: 0.15),
+                                colors.accent.withValues(alpha: 0.1),
+                              ],
                       ),
                       border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.15),
+                        color: isDark
+                            ? Colors.white.withValues(alpha: 0.15)
+                            : colors.primary.withValues(alpha: 0.2),
                         width: 1.5,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primary.withValues(alpha: 0.3),
+                          color: colors.primary.withValues(alpha: isDark ? 0.3 : 0.2),
                           blurRadius: 30,
                           spreadRadius: 5,
                         ),
                       ],
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.school_rounded,
                       size: 40,
-                      color: Colors.white,
+                      color: isDark ? Colors.white : colors.primary,
                     ),
                   ),
                 ],
@@ -284,7 +311,7 @@ class _SplashPageState extends State<SplashPage>
     );
   }
 
-  Widget _buildTitle() {
+  Widget _buildTitle(AppColorsExtension colors, bool isDark) {
     return SlideTransition(
       position: _titleSlide,
       child: FadeTransition(
@@ -292,12 +319,18 @@ class _SplashPageState extends State<SplashPage>
         child: Column(
           children: [
             ShaderMask(
-              shaderCallback: (bounds) => const LinearGradient(
-                colors: [
-                  Colors.white,
-                  Color(0xFFB8F0FF),
-                  AppColors.primaryLight,
-                ],
+              shaderCallback: (bounds) => LinearGradient(
+                colors: isDark
+                    ? [
+                        Colors.white,
+                        const Color(0xFFB8F0FF),
+                        colors.primaryLight,
+                      ]
+                    : [
+                        colors.primaryDark,
+                        colors.primary,
+                        colors.accent,
+                      ],
               ).createShader(bounds),
               child: const Text(
                 'TERCİH CEPTE',
@@ -305,7 +338,7 @@ class _SplashPageState extends State<SplashPage>
                   fontSize: 34,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 3,
-                  color: Colors.white,
+                  color: Colors.white, // ShaderMask requires white base
                   height: 1,
                 ),
                 textAlign: TextAlign.center,
@@ -317,7 +350,7 @@ class _SplashPageState extends State<SplashPage>
     );
   }
 
-  Widget _buildSubtitle() {
+  Widget _buildSubtitle(AppColorsExtension colors, bool isDark) {
     return FadeTransition(
       opacity: _subtitleFade,
       child: Text(
@@ -325,7 +358,9 @@ class _SplashPageState extends State<SplashPage>
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
-          color: Colors.white.withValues(alpha: 0.6),
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.6)
+              : colors.textSubtle,
           letterSpacing: 0.5,
         ),
         textAlign: TextAlign.center,
@@ -333,7 +368,7 @@ class _SplashPageState extends State<SplashPage>
     );
   }
 
-  Widget _buildBottomLoader() {
+  Widget _buildBottomLoader(AppColorsExtension colors, bool isDark) {
     return FadeTransition(
       opacity: _bottomFade,
       child: Column(
@@ -345,7 +380,9 @@ class _SplashPageState extends State<SplashPage>
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w400,
-              color: Colors.white.withValues(alpha: 0.35),
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.35)
+                  : colors.textSubtle.withValues(alpha: 0.6),
             ),
             textAlign: TextAlign.center,
           ),
@@ -385,6 +422,8 @@ class _DotLoaderState extends State<_DotLoader> with SingleTickerProviderStateMi
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
@@ -405,7 +444,7 @@ class _DotLoaderState extends State<_DotLoader> with SingleTickerProviderStateMi
                   height: 8,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColors.primaryLight.withValues(alpha: opacity),
+                    color: colors.primaryLight.withValues(alpha: opacity),
                   ),
                 ),
               ),
@@ -421,7 +460,9 @@ class _DotLoaderState extends State<_DotLoader> with SingleTickerProviderStateMi
 // FLOATING ORBS — subtle background decoration
 // ---------------------------------------------------------------------------
 class _FloatingOrbs extends StatefulWidget {
-  const _FloatingOrbs();
+  const _FloatingOrbs({required this.isDark});
+
+  final bool isDark;
 
   @override
   State<_FloatingOrbs> createState() => _FloatingOrbsState();
@@ -447,6 +488,9 @@ class _FloatingOrbsState extends State<_FloatingOrbs> with SingleTickerProviderS
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+    final orbAlpha = widget.isDark ? 1.0 : 0.6;
+
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
@@ -456,17 +500,17 @@ class _FloatingOrbsState extends State<_FloatingOrbs> with SingleTickerProviderS
             Positioned(
               top: 120 + 20 * math.sin(t),
               right: -40 + 15 * math.cos(t),
-              child: _orb(160, AppColors.primary.withValues(alpha: 0.08)),
+              child: _orb(160, colors.primary.withValues(alpha: 0.08 * orbAlpha)),
             ),
             Positioned(
               bottom: 200 + 15 * math.cos(t * 0.7),
               left: -60 + 10 * math.sin(t * 0.7),
-              child: _orb(200, AppColors.accent.withValues(alpha: 0.06)),
+              child: _orb(200, colors.accent.withValues(alpha: 0.06 * orbAlpha)),
             ),
             Positioned(
               top: 300 + 10 * math.sin(t * 1.3),
               left: 100 + 20 * math.cos(t * 1.3),
-              child: _orb(80, AppColors.info.withValues(alpha: 0.05)),
+              child: _orb(80, colors.info.withValues(alpha: 0.05 * orbAlpha)),
             ),
           ],
         );

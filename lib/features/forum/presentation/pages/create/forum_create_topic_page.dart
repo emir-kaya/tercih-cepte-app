@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_radius.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
@@ -76,26 +76,27 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
   @override
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+    final colors = context.appColors;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: colors.background,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: colors.background,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.close_rounded, color: AppColors.textMain),
+          icon: Icon(Icons.close_rounded, color: colors.textMain),
           onPressed: () => context.pop(),
         ),
         title: Text(
           'Yeni Konu',
-          style: AppTypography.h3.copyWith(fontSize: 18),
+          style: AppTypography.h3.copyWith(fontSize: 18, color: colors.textMain),
         ),
         centerTitle: true,
       ),
       body: Column(
         children: [
-          const Divider(height: 1, color: AppColors.divider),
+          Divider(height: 1, color: colors.divider),
 
           // Scrollable form
           Expanded(
@@ -106,13 +107,14 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
               ),
               children: [
                 // Title
-                _buildLabel('Başlık'),
+                _buildLabel('Başlık', colors),
                 const SizedBox(height: AppSpacing.xs),
                 _buildInputContainer(
+                  colors: colors,
                   child: TextField(
                     controller: _titleController,
                     style: AppTypography.bodyLg.copyWith(
-                      color: AppColors.textMain,
+                      color: colors.textMain,
                       fontWeight: FontWeight.w600,
                     ),
                     maxLength: 100,
@@ -120,7 +122,7 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                     decoration: InputDecoration(
                       hintText: 'Konunun başlığını yazın...',
                       hintStyle: AppTypography.bodyLg.copyWith(
-                        color: AppColors.textSubtle.withValues(alpha: 0.6),
+                        color: colors.textSubtle.withValues(alpha: 0.6),
                       ),
                       border: InputBorder.none,
                       counterText: '',
@@ -139,7 +141,7 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                     child: Text(
                       '${_titleController.text.length}/100',
                       style: AppTypography.caption.copyWith(
-                        color: AppColors.textSubtle.withValues(alpha: 0.5),
+                        color: colors.textSubtle.withValues(alpha: 0.5),
                       ),
                     ),
                   ),
@@ -147,9 +149,10 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                 const SizedBox(height: AppSpacing.l),
 
                 // University
-                _buildLabel('Üniversite'),
+                _buildLabel('Üniversite', colors),
                 const SizedBox(height: AppSpacing.xs),
                 _buildInputContainer(
+                  colors: colors,
                   child: DropdownButtonHideUnderline(
                     child: ButtonTheme(
                       alignedDropdown: true,
@@ -158,19 +161,19 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                         isExpanded: true,
                         hint: Row(
                           children: [
-                            const Icon(Icons.school_outlined, size: 20, color: AppColors.textSubtle),
+                            Icon(Icons.school_outlined, size: 20, color: colors.textSubtle),
                             const SizedBox(width: AppSpacing.s),
                             Text(
                               'Üniversite seçin',
                               style: AppTypography.bodyMd.copyWith(
-                                color: AppColors.textSubtle.withValues(alpha: 0.6),
+                                color: colors.textSubtle.withValues(alpha: 0.6),
                               ),
                             ),
                           ],
                         ),
-                        icon: const Icon(Icons.keyboard_arrow_down_rounded, color: AppColors.textSubtle),
-                        dropdownColor: AppColors.surfaceVariant,
-                        style: AppTypography.bodyMd.copyWith(color: AppColors.textMain),
+                        icon: Icon(Icons.keyboard_arrow_down_rounded, color: colors.textSubtle),
+                        dropdownColor: colors.surfaceVariant,
+                        style: AppTypography.bodyMd.copyWith(color: colors.textMain),
                         padding: const EdgeInsets.symmetric(
                           horizontal: AppSpacing.m,
                           vertical: AppSpacing.xxs,
@@ -192,12 +195,13 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                 const SizedBox(height: AppSpacing.l),
 
                 // Content
-                _buildLabel('İçerik'),
+                _buildLabel('İçerik', colors),
                 const SizedBox(height: AppSpacing.xs),
                 _buildInputContainer(
+                  colors: colors,
                   child: TextField(
                     controller: _contentController,
-                    style: AppTypography.bodyMd.copyWith(color: AppColors.textMain),
+                    style: AppTypography.bodyMd.copyWith(color: colors.textMain),
                     maxLines: 6,
                     minLines: 6,
                     maxLength: 2000,
@@ -206,7 +210,7 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                     decoration: InputDecoration(
                       hintText: 'Düşüncelerinizi, sorularınızı detaylı bir şekilde yazın...',
                       hintStyle: AppTypography.bodyMd.copyWith(
-                        color: AppColors.textSubtle.withValues(alpha: 0.6),
+                        color: colors.textSubtle.withValues(alpha: 0.6),
                         height: 1.5,
                       ),
                       border: InputBorder.none,
@@ -222,7 +226,7 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                     child: Text(
                       '${_contentController.text.length}/2000',
                       style: AppTypography.caption.copyWith(
-                        color: AppColors.textSubtle.withValues(alpha: 0.5),
+                        color: colors.textSubtle.withValues(alpha: 0.5),
                       ),
                     ),
                   ),
@@ -232,35 +236,36 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                 // Tags
                 Row(
                   children: [
-                    _buildLabel('Etiketler'),
+                    _buildLabel('Etiketler', colors),
                     const SizedBox(width: AppSpacing.xs),
                     Text(
                       '(isteğe bağlı, en fazla 5)',
                       style: AppTypography.caption.copyWith(
-                        color: AppColors.textSubtle.withValues(alpha: 0.5),
+                        color: colors.textSubtle.withValues(alpha: 0.5),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 _buildInputContainer(
+                  colors: colors,
                   child: TextField(
                     controller: _tagController,
-                    style: AppTypography.bodyMd.copyWith(color: AppColors.textMain),
+                    style: AppTypography.bodyMd.copyWith(color: colors.textMain),
                     textInputAction: TextInputAction.done,
                     onSubmitted: (_) => _addTag(),
                     decoration: InputDecoration(
                       hintText: 'Etiket yazın...',
                       hintStyle: AppTypography.bodyMd.copyWith(
-                        color: AppColors.textSubtle.withValues(alpha: 0.6),
+                        color: colors.textSubtle.withValues(alpha: 0.6),
                       ),
                       border: InputBorder.none,
-                      prefixIcon: const Padding(
-                        padding: EdgeInsets.only(left: AppSpacing.m, right: 4),
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.only(left: AppSpacing.m, right: 4),
                         child: Text(
                           '#',
                           style: TextStyle(
-                            color: AppColors.primary,
+                            color: colors.primary,
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
@@ -274,12 +279,12 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                                 margin: const EdgeInsets.only(right: AppSpacing.xs),
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: AppColors.primary.withValues(alpha: 0.12),
+                                  color: colors.primary.withValues(alpha: 0.12),
                                   borderRadius: BorderRadius.circular(AppRadius.sm),
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.add_rounded,
-                                  color: AppColors.primary,
+                                  color: colors.primary,
                                   size: 20,
                                 ),
                               ),
@@ -307,10 +312,10 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                           bottom: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.1),
+                          color: colors.primary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(AppRadius.circular),
                           border: Border.all(
-                            color: AppColors.primary.withValues(alpha: 0.2),
+                            color: colors.primary.withValues(alpha: 0.2),
                           ),
                         ),
                         child: Row(
@@ -319,7 +324,7 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                             Text(
                               '#$tag',
                               style: AppTypography.bodySm.copyWith(
-                                color: AppColors.primary,
+                                color: colors.primary,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -329,13 +334,13 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                               child: Container(
                                 padding: const EdgeInsets.all(2),
                                 decoration: BoxDecoration(
-                                  color: AppColors.primary.withValues(alpha: 0.15),
+                                  color: colors.primary.withValues(alpha: 0.15),
                                   shape: BoxShape.circle,
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.close_rounded,
                                   size: 14,
-                                  color: AppColors.primary,
+                                  color: colors.primary,
                                 ),
                               ),
                             ),
@@ -359,9 +364,9 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
               top: AppSpacing.m,
               bottom: bottomInset > 0 ? AppSpacing.m : AppSpacing.l + MediaQuery.of(context).padding.bottom,
             ),
-            decoration: const BoxDecoration(
-              color: AppColors.background,
-              border: Border(top: BorderSide(color: AppColors.divider)),
+            decoration: BoxDecoration(
+              color: colors.background,
+              border: Border(top: BorderSide(color: colors.divider)),
             ),
             child: SizedBox(
               width: double.infinity,
@@ -370,11 +375,11 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                 duration: const Duration(milliseconds: 200),
                 decoration: BoxDecoration(
                   gradient: _isFormValid
-                      ? const LinearGradient(
-                          colors: [AppColors.primary, AppColors.accent],
+                      ? LinearGradient(
+                          colors: [colors.primary, colors.accent],
                         )
                       : null,
-                  color: _isFormValid ? null : AppColors.surfaceVariant,
+                  color: _isFormValid ? null : colors.surfaceVariant,
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
                 child: Material(
@@ -386,7 +391,7 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                       child: Text(
                         'Konuyu Paylaş',
                         style: AppTypography.bodyLg.copyWith(
-                          color: _isFormValid ? Colors.white : AppColors.textSubtle,
+                          color: _isFormValid ? Colors.white : colors.textSubtle,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -401,23 +406,23 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
     );
   }
 
-  Widget _buildLabel(String text) {
+  Widget _buildLabel(String text, AppColorsExtension colors) {
     return Text(
       text,
       style: AppTypography.bodySm.copyWith(
         fontWeight: FontWeight.w600,
-        color: AppColors.textSubtle,
+        color: colors.textSubtle,
         letterSpacing: 0.3,
       ),
     );
   }
 
-  Widget _buildInputContainer({required Widget child}) {
+  Widget _buildInputContainer({required AppColorsExtension colors, required Widget child}) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: colors.surface,
         borderRadius: BorderRadius.circular(AppRadius.md),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: colors.border),
       ),
       child: child,
     );

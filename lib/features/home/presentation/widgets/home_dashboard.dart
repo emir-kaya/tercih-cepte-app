@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_radius.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
@@ -16,6 +16,8 @@ class HomeDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
       child: Column(
@@ -31,8 +33,8 @@ class HomeDashboard extends StatelessWidget {
                   value: stats.totalUniversities.toString(),
                   icon: Icons.account_balance_rounded,
                   gradientColors: [
-                    AppColors.primary,
-                    AppColors.primaryDark,
+                    colors.primary,
+                    colors.primaryDark,
                   ],
                 ),
               ),
@@ -43,7 +45,7 @@ class HomeDashboard extends StatelessWidget {
                   value: stats.totalDepartments.toString(),
                   icon: Icons.menu_book_rounded,
                   gradientColors: [
-                    AppColors.info,
+                    colors.info,
                     const Color(0xFF1D4ED8),
                   ],
                 ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/app_shimmer.dart';
 
@@ -10,6 +10,7 @@ class DetailShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final topPadding = MediaQuery.of(context).padding.top;
+    final colors = context.appColors;
 
     return AppShimmer(
       child: SingleChildScrollView(
@@ -19,9 +20,9 @@ class DetailShimmer extends StatelessWidget {
             // Hero shimmer
             Container(
               padding: EdgeInsets.fromLTRB(AppSpacing.m, topPadding + AppSpacing.m, AppSpacing.m, AppSpacing.l),
-              decoration: const BoxDecoration(
-                color: AppColors.surfaceVariant,
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: colors.surfaceVariant,
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(32),
                   bottomRight: Radius.circular(32),
                 ),
@@ -85,8 +86,8 @@ class DetailShimmer extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
                 itemCount: 4,
-                separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.s),
-                itemBuilder: (_, _) => const ShimmerContainer(width: 120, height: 130),
+                separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.s),
+                itemBuilder: (_, __) => const ShimmerContainer(width: 120, height: 130),
               ),
             ),
           ],

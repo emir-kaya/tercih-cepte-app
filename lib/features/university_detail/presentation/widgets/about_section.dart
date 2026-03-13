@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
@@ -13,15 +13,17 @@ class AboutSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Hakkında', style: AppTypography.h3),
+        Text('Hakkında', style: AppTypography.h3.copyWith(color: colors.textMain)),
         const SizedBox(height: AppSpacing.s),
         Container(
           padding: const EdgeInsets.all(AppSpacing.m),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: colors.surface,
             borderRadius: BorderRadius.circular(AppRadius.lg),
           ),
           child: Row(
@@ -32,13 +34,13 @@ class AboutSection extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.primary.withValues(alpha: 0.2),
-                      AppColors.accent.withValues(alpha: 0.15),
+                      colors.primary.withValues(alpha: 0.2),
+                      colors.accent.withValues(alpha: 0.15),
                     ],
                   ),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.person_rounded, color: AppColors.primaryLight, size: 24),
+                child: Icon(Icons.person_rounded, color: colors.primaryLight, size: 24),
               ),
               const SizedBox(width: AppSpacing.s),
               Expanded(
@@ -47,12 +49,12 @@ class AboutSection extends StatelessWidget {
                   children: [
                     Text(
                       'Rektör',
-                      style: AppTypography.caption.copyWith(color: AppColors.textSubtle),
+                      style: AppTypography.caption.copyWith(color: colors.textSubtle),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       detail.rector,
-                      style: AppTypography.bodyLg.copyWith(fontWeight: FontWeight.w600),
+                      style: AppTypography.bodyLg.copyWith(fontWeight: FontWeight.w600, color: colors.textMain),
                     ),
                   ],
                 ),
@@ -98,25 +100,27 @@ class _AboutTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return Container(
       padding: const EdgeInsets.all(AppSpacing.m),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: colors.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 20, color: AppColors.primaryLight),
+          Icon(icon, size: 20, color: colors.primaryLight),
           const SizedBox(height: AppSpacing.s),
           Text(
             value,
-            style: AppTypography.bodyLg.copyWith(fontWeight: FontWeight.bold),
+            style: AppTypography.bodyLg.copyWith(fontWeight: FontWeight.bold, color: colors.textMain),
           ),
           const SizedBox(height: 2),
           Text(
             label,
-            style: AppTypography.caption.copyWith(color: AppColors.textSubtle),
+            style: AppTypography.caption.copyWith(color: colors.textSubtle),
           ),
         ],
       ),

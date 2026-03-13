@@ -35,15 +35,15 @@ class AppTheme {
           statusBarBrightness: Brightness.dark,
         ),
       ),
-      textTheme: const TextTheme(
-        displayLarge: AppTypography.h1,
-        displayMedium: AppTypography.h2,
-        displaySmall: AppTypography.h3,
-        bodyLarge: AppTypography.bodyLg,
-        bodyMedium: AppTypography.bodyMd,
-        bodySmall: AppTypography.bodySm,
-        labelLarge: AppTypography.label,
-        labelSmall: AppTypography.caption,
+      textTheme: TextTheme(
+        displayLarge: AppTypography.h1.copyWith(color: AppColorsDark.textMain),
+        displayMedium: AppTypography.h2.copyWith(color: AppColorsDark.textMain),
+        displaySmall: AppTypography.h3.copyWith(color: AppColorsDark.textMain),
+        bodyLarge: AppTypography.bodyLg.copyWith(color: AppColorsDark.textMain),
+        bodyMedium: AppTypography.bodyMd.copyWith(color: AppColorsDark.textMain),
+        bodySmall: AppTypography.bodySm.copyWith(color: AppColorsDark.textMain),
+        labelLarge: AppTypography.label.copyWith(color: AppColorsDark.textSubtle),
+        labelSmall: AppTypography.caption.copyWith(color: AppColorsDark.textSubtle),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(

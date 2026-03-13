@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_colors_extension.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_spacing.dart';
 
@@ -31,8 +31,8 @@ class MainNavigation extends StatelessWidget {
           Positioned(
             left: AppSpacing.l,
             right: AppSpacing.l,
-            bottom: MediaQuery.paddingOf(context).bottom > 0 
-                ? MediaQuery.paddingOf(context).bottom 
+            bottom: MediaQuery.paddingOf(context).bottom > 0
+                ? MediaQuery.paddingOf(context).bottom
                 : AppSpacing.m,
             child: _FloatingBottomBar(
               currentIndex: navigationShell.currentIndex,
@@ -56,6 +56,8 @@ class _FloatingBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(AppRadius.circular),
       child: BackdropFilter(
@@ -64,10 +66,10 @@ class _FloatingBottomBar extends StatelessWidget {
           height: 64,
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s),
           decoration: BoxDecoration(
-            color: AppColors.surfaceHighlight.withValues(alpha: 0.8),
+            color: colors.surfaceHighlight.withValues(alpha: 0.8),
             borderRadius: BorderRadius.circular(AppRadius.circular),
             border: Border.all(
-              color: AppColors.border.withValues(alpha: 0.5),
+              color: colors.border.withValues(alpha: 0.5),
               width: 1,
             ),
           ),
@@ -120,8 +122,9 @@ class _BottomBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isSelected ? AppColors.primaryLight : AppColors.textSubtle;
-    
+    final colors = context.appColors;
+    final color = isSelected ? colors.primaryLight : colors.textSubtle;
+
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
@@ -130,7 +133,7 @@ class _BottomBarItem extends StatelessWidget {
         curve: Curves.easeInOut,
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m, vertical: AppSpacing.xs),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary.withValues(alpha: 0.15) : Colors.transparent,
+          color: isSelected ? colors.primary.withValues(alpha: 0.15) : Colors.transparent,
           borderRadius: BorderRadius.circular(AppRadius.circular),
         ),
         child: Row(

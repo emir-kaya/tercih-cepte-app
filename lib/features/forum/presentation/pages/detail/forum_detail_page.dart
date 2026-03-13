@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../app/di/injector.dart';
-import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
 import '../../../../../core/widgets/app_scaffold.dart';
@@ -28,24 +28,26 @@ class ForumDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return BlocProvider(
       create: (context) => getIt<ForumDetailBloc>()..add(LoadForumReplies(topic.id)),
       child: AppScaffold(
         appBar: AppBar(
-          backgroundColor: AppColors.background,
+          backgroundColor: colors.background,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.textMain, size: 20),
+            icon: Icon(Icons.arrow_back_ios_new_rounded, color: colors.textMain, size: 20),
             onPressed: () => context.pop(),
           ),
           title: Text(
             'Konu Detayı',
-            style: AppTypography.h3.copyWith(fontSize: 18),
+            style: AppTypography.h3.copyWith(fontSize: 18, color: colors.textMain),
           ),
           centerTitle: true,
           actions: [
             IconButton(
-              icon: const Icon(Icons.more_horiz_rounded, color: AppColors.textMain),
+              icon: Icon(Icons.more_horiz_rounded, color: colors.textMain),
               onPressed: () {},
             ),
           ],
@@ -192,13 +194,13 @@ class ForumDetailPage extends StatelessWidget {
                       child: ForumPostCard(topic: topic),
                     ),
                   ),
-                  
+
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(AppSpacing.l, AppSpacing.m, AppSpacing.l, AppSpacing.s),
                       child: Text(
                         'Yanıtlar',
-                        style: AppTypography.h3.copyWith(fontSize: 16),
+                        style: AppTypography.h3.copyWith(fontSize: 16, color: colors.textMain),
                       ),
                     ),
                   ),
@@ -210,7 +212,7 @@ class ForumDetailPage extends StatelessWidget {
                         child: Center(
                           child: Text(
                             'Henüz yanıt yok. İlk yanıtlayan sen ol!',
-                            style: AppTypography.bodyMd.copyWith(color: AppColors.textSubtle),
+                            style: AppTypography.bodyMd.copyWith(color: colors.textSubtle),
                           ),
                         ),
                       ),
@@ -237,7 +239,7 @@ class ForumDetailPage extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () => ForumReplyBottomSheet.show(context),
-          backgroundColor: AppColors.primary,
+          backgroundColor: colors.primary,
           icon: const Icon(Icons.reply_rounded, color: Colors.white),
           label: Text(
             'Yanıt Yaz',

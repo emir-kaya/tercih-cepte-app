@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/widgets/app_scaffold.dart';
@@ -39,12 +39,14 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return AppScaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: colors.background,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.textMain, size: 20),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: colors.textMain, size: 20),
           onPressed: () => context.pop(),
         ),
         titleSpacing: 0,
@@ -54,9 +56,9 @@ class _SearchPageState extends State<SearchPage> {
             controller: _searchController,
             focusNode: _searchFocusNode,
             hintText: 'Üniversite, bölüm, ders ara...',
-            prefixIcon: const Icon(Icons.search_rounded, color: AppColors.textSubtle),
+            prefixIcon: Icon(Icons.search_rounded, color: colors.textSubtle),
             suffixIcon: IconButton(
-              icon: const Icon(Icons.close_rounded, color: AppColors.textSubtle),
+              icon: Icon(Icons.close_rounded, color: colors.textSubtle),
               onPressed: () {
                 _searchController.clear();
               },
@@ -72,20 +74,20 @@ class _SearchPageState extends State<SearchPage> {
             const SizedBox(height: AppSpacing.m),
             Text(
               'Son Aramalar',
-              style: AppTypography.h3.copyWith(fontSize: 16),
+              style: AppTypography.h3.copyWith(fontSize: 16, color: colors.textMain),
             ),
             const SizedBox(height: AppSpacing.m),
             Expanded(
               child: ListView.separated(
                 itemCount: 3,
-                separatorBuilder: (context, index) => const Divider(height: 1, color: AppColors.border),
+                separatorBuilder: (context, index) => Divider(height: 1, color: colors.border),
                 itemBuilder: (context, index) {
                   final mockSearches = ['Boğaziçi Bilgisayar', 'ODTÜ Yurtları', 'TYT Matematik'];
                   return ListTile(
                     contentPadding: EdgeInsets.zero,
-                    leading: const Icon(Icons.history_rounded, color: AppColors.textSubtle),
-                    title: Text(mockSearches[index], style: AppTypography.bodyMd),
-                    trailing: const Icon(Icons.north_west_rounded, color: AppColors.textSubtle, size: 16),
+                    leading: Icon(Icons.history_rounded, color: colors.textSubtle),
+                    title: Text(mockSearches[index], style: AppTypography.bodyMd.copyWith(color: colors.textMain)),
+                    trailing: Icon(Icons.north_west_rounded, color: colors.textSubtle, size: 16),
                     onTap: () {
                       _searchController.text = mockSearches[index];
                     },

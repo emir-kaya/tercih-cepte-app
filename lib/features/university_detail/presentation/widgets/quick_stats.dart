@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
@@ -13,13 +13,15 @@ class QuickStats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return Row(
       children: [
         Expanded(
           child: _StatCard(
             label: 'Fakülte',
             value: detail.facultyCount.replaceAll(RegExp(r'[^0-9]'), ''),
-            gradient: const [AppColors.primary, AppColors.primaryDark],
+            gradient: [colors.primary, colors.primaryDark],
           ),
         ),
         const SizedBox(width: AppSpacing.s),
@@ -27,7 +29,7 @@ class QuickStats extends StatelessWidget {
           child: _StatCard(
             label: 'Bölüm',
             value: detail.departmentCount.replaceAll(RegExp(r'[^0-9]'), ''),
-            gradient: const [AppColors.info, Color(0xFF1D4ED8)],
+            gradient: [colors.info, const Color(0xFF1D4ED8)],
           ),
         ),
         const SizedBox(width: AppSpacing.s),
@@ -35,7 +37,7 @@ class QuickStats extends StatelessWidget {
           child: _StatCard(
             label: 'Kuruluş',
             value: detail.foundedYear.toString(),
-            gradient: const [AppColors.accent, AppColors.accentDark],
+            gradient: [colors.accent, colors.accentDark],
           ),
         ),
       ],

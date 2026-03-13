@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../domain/entities/onboard_page_data.dart';
@@ -12,6 +12,8 @@ class OnboardPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.l),
       child: Column(
@@ -45,7 +47,7 @@ class OnboardPageView extends StatelessWidget {
           // Title
           Text(
             data.title,
-            style: AppTypography.h1.copyWith(fontSize: 28, height: 1.2),
+            style: AppTypography.h1.copyWith(fontSize: 28, height: 1.2, color: colors.textMain),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: AppSpacing.m),
@@ -54,7 +56,7 @@ class OnboardPageView extends StatelessWidget {
           Text(
             data.description,
             style: AppTypography.bodyLg.copyWith(
-              color: AppColors.textSubtle,
+              color: colors.textSubtle,
               height: 1.5,
             ),
             textAlign: TextAlign.center,
