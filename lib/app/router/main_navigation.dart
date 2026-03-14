@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/locale/l10n_extension.dart';
 import '../../core/theme/app_colors_extension.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_spacing.dart';
@@ -73,31 +74,36 @@ class _FloatingBottomBar extends StatelessWidget {
               width: 1,
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _BottomBarItem(
-                icon: Icons.home_outlined,
-                activeIcon: Icons.home_rounded,
-                label: 'Ana Sayfa',
-                isSelected: currentIndex == 0,
-                onTap: () => onTap(0),
-              ),
-              _BottomBarItem(
-                icon: Icons.forum_outlined,
-                activeIcon: Icons.forum_rounded,
-                label: 'Forum',
-                isSelected: currentIndex == 1,
-                onTap: () => onTap(1),
-              ),
-              _BottomBarItem(
-                icon: Icons.person_outline_rounded,
-                activeIcon: Icons.person_rounded,
-                label: 'Profil',
-                isSelected: currentIndex == 2,
-                onTap: () => onTap(2),
-              ),
-            ],
+          child: Builder(
+            builder: (context) {
+              final t = context.l10n;
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _BottomBarItem(
+                    icon: Icons.home_outlined,
+                    activeIcon: Icons.home_rounded,
+                    label: t.navHome,
+                    isSelected: currentIndex == 0,
+                    onTap: () => onTap(0),
+                  ),
+                  _BottomBarItem(
+                    icon: Icons.forum_outlined,
+                    activeIcon: Icons.forum_rounded,
+                    label: t.navForum,
+                    isSelected: currentIndex == 1,
+                    onTap: () => onTap(1),
+                  ),
+                  _BottomBarItem(
+                    icon: Icons.person_outline_rounded,
+                    activeIcon: Icons.person_rounded,
+                    label: t.navProfile,
+                    isSelected: currentIndex == 2,
+                    onTap: () => onTap(2),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),

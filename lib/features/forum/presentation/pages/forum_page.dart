@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/di/injector.dart';
 import '../../../../app/router/route_paths.dart';
+import '../../../../core/locale/l10n_extension.dart';
 import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -38,6 +39,7 @@ class _ForumContentView extends StatelessWidget {
   Widget build(BuildContext context) {
     final topPadding = MediaQuery.of(context).padding.top;
     final colors = context.appColors;
+    final t = context.l10n;
 
     return Column(
       children: [
@@ -59,10 +61,10 @@ class _ForumContentView extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Forum', style: AppTypography.h1.copyWith(color: colors.textMain)),
+                      Text(t.forumTitle, style: AppTypography.h1.copyWith(color: colors.textMain)),
                       const SizedBox(height: AppSpacing.xxs),
                       Text(
-                        'Tartış, sor, keşfet',
+                        t.forumSubtitle,
                         style: AppTypography.bodyMd.copyWith(
                           color: colors.textSubtle,
                         ),
@@ -73,7 +75,7 @@ class _ForumContentView extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: AppSpacing.m),
-              _buildSearchBar(colors),
+              _buildSearchBar(context, colors),
             ],
           ),
         ),
@@ -107,10 +109,10 @@ class _ForumContentView extends StatelessWidget {
 
                 if (state is ForumLoaded) {
                   if (state.topics.isEmpty) {
-                    return const Center(
+                    return Center(
                       child: EmptyState(
-                        title: 'Henüz Konu Yok',
-                        message: 'İlk tartışmayı sen başlat!',
+                        title: t.forumNoTopics,
+                        message: t.forumNoTopicsMessage,
                         icon: Icons.forum_outlined,
                       ),
                     );
@@ -156,16 +158,16 @@ class _ForumContentView extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(AppRadius.md),
           onTap: () => context.go('${RoutePaths.forum}/${RoutePaths.forumCreate}'),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.edit_rounded, size: 18, color: Colors.white),
-                SizedBox(width: 6),
+                const Icon(Icons.edit_rounded, size: 18, color: Colors.white),
+                const SizedBox(width: 6),
                 Text(
-                  'Yeni Konu',
-                  style: TextStyle(
+                  context.l10n.forumNewTopic,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
@@ -179,7 +181,7 @@ class _ForumContentView extends StatelessWidget {
     );
   }
 
-  Widget _buildSearchBar(AppColorsExtension colors) {
+  Widget _buildSearchBar(BuildContext context, AppColorsExtension colors) {
     return Container(
       decoration: BoxDecoration(
         color: colors.surfaceVariant,
@@ -189,7 +191,7 @@ class _ForumContentView extends StatelessWidget {
       child: TextFormField(
         style: AppTypography.bodyMd.copyWith(color: colors.textMain),
         decoration: InputDecoration(
-          hintText: 'Konu, üniversite veya etiket ara...',
+          hintText: context.l10n.forumSearchHint,
           hintStyle: AppTypography.bodyMd.copyWith(color: colors.textSubtle),
           prefixIcon: Padding(
             padding: const EdgeInsets.only(left: 14, right: 10),

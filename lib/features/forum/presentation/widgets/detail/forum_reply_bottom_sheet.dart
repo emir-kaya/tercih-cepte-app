@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/locale/l10n_extension.dart';
 import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_radius.dart';
 import '../../../../../core/theme/app_spacing.dart';
@@ -55,7 +56,7 @@ class _ForumReplyBottomSheetState extends State<ForumReplyBottomSheet> {
     Navigator.of(context).pop();
     AppToast.show(
       context,
-      message: 'Yanıtınız gönderildi!',
+      message: context.l10n.forumReplySent,
       type: AppToastType.success,
     );
   }
@@ -65,6 +66,7 @@ class _ForumReplyBottomSheetState extends State<ForumReplyBottomSheet> {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
     final bottomPadding = MediaQuery.of(context).padding.bottom;
     final colors = context.appColors;
+    final t = context.l10n;
 
     return Container(
       padding: EdgeInsets.only(
@@ -100,7 +102,7 @@ class _ForumReplyBottomSheetState extends State<ForumReplyBottomSheet> {
                 Icon(Icons.reply_rounded, color: colors.primary, size: 20),
                 const SizedBox(width: AppSpacing.xs),
                 Text(
-                  'Yanıt Yaz',
+                  t.forumWriteReply,
                   style: AppTypography.bodyLg.copyWith(fontWeight: FontWeight.bold, color: colors.textMain),
                 ),
               ],
@@ -119,7 +121,7 @@ class _ForumReplyBottomSheetState extends State<ForumReplyBottomSheet> {
                   const SizedBox(width: 4),
                   Expanded(
                     child: Text(
-                      '${widget.replyingTo} adlı kullanıcıya yanıt',
+                      t.forumReplyingTo(widget.replyingTo!),
                       style: AppTypography.caption.copyWith(
                         color: colors.textSubtle,
                       ),
@@ -149,7 +151,7 @@ class _ForumReplyBottomSheetState extends State<ForumReplyBottomSheet> {
                 style: AppTypography.bodyMd.copyWith(color: colors.textMain),
                 onChanged: (_) => setState(() {}),
                 decoration: InputDecoration(
-                  hintText: 'Yanıtınızı yazın...',
+                  hintText: t.forumReplyHint,
                   hintStyle: AppTypography.bodyMd.copyWith(
                     color: colors.textSubtle.withValues(alpha: 0.6),
                   ),
@@ -207,7 +209,7 @@ class _ForumReplyBottomSheetState extends State<ForumReplyBottomSheet> {
                         ),
                         const SizedBox(width: 6),
                         Text(
-                          'Gönder',
+                          t.forumSend,
                           style: AppTypography.bodySm.copyWith(
                             color: _hasContent ? Colors.white : colors.textSubtle,
                             fontWeight: FontWeight.bold,

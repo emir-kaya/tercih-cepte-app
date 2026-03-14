@@ -1,3 +1,14 @@
+// Auth
+import '../../features/auth/data/datasources/auth_local_datasource.dart';
+import '../../features/auth/data/repositories/auth_repository_impl.dart';
+import '../../features/auth/domain/repositories/auth_repository.dart';
+import '../../features/auth/domain/usecases/check_auth_status.dart';
+import '../../features/auth/domain/usecases/get_departments.dart';
+import '../../features/auth/domain/usecases/get_universities.dart';
+import '../../features/auth/domain/usecases/login_user.dart';
+import '../../features/auth/domain/usecases/register_user.dart';
+import '../../features/auth/presentation/bloc/login/login_bloc.dart';
+import '../../features/auth/presentation/bloc/register/register_bloc.dart';
 // Forum
 import '../../features/forum/data/datasources/forum_local_datasource.dart';
 import '../../features/forum/data/repositories/forum_repository_impl.dart';
@@ -86,6 +97,31 @@ void registerUniversityDetailModules() {
 
   // BLoC
   getIt.registerFactory(() => UniversityDetailBloc(getIt()));
+}
+
+void registerAuthModules() {
+  // Data Sources
+  getIt.registerLazySingleton<AuthLocalDataSource>(() => AuthLocalDataSource());
+
+  // Repositories
+  getIt.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(localDataSource: getIt()),
+  );
+
+  // Use Cases
+  getIt.registerLazySingleton(() => LoginUser(getIt()));
+  getIt.registerLazySingleton(() => RegisterUser(getIt()));
+  getIt.registerLazySingleton(() => GetUniversities(getIt()));
+  getIt.registerLazySingleton(() => GetDepartments(getIt()));
+  getIt.registerLazySingleton(() => CheckAuthStatus(getIt()));
+
+  // BLoC
+  getIt.registerFactory(() => LoginBloc(loginUser: getIt()));
+  getIt.registerFactory(() => RegisterBloc(
+    registerUser: getIt(),
+    getUniversities: getIt(),
+    getDepartments: getIt(),
+  ));
 }
 
 void registerProfileModules() {

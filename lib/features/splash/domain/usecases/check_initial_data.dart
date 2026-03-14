@@ -14,4 +14,8 @@ class CheckInitialData {
   Future<bool> isOnboardingCompleted() {
     return repository.isOnboardingCompleted();
   }
+
+  Future<bool> isUserLoggedIn() {
+    return repository.isUserLoggedIn();
+  }
 }

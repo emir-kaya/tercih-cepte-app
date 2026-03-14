@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/locale/l10n_extension.dart';
 import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -61,7 +62,7 @@ class ProfileWizardAction extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Tercih Sihirbazı',
+                        context.l10n.profileWizardTitle,
                         style: AppTypography.bodyLg.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -69,7 +70,7 @@ class ProfileWizardAction extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        'Sana en uygun bölümü birlikte keşfedelim',
+                        context.l10n.profileWizardSubtitle,
                         style: AppTypography.bodySm.copyWith(
                           color: Colors.white.withValues(alpha: 0.8),
                         ),

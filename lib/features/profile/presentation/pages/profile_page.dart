@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/locale/l10n_extension.dart';
 import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
@@ -22,7 +23,7 @@ class ProfilePage extends StatelessWidget {
           SliverPadding(
             padding: const EdgeInsets.only(top: AppSpacing.xl, left: AppSpacing.m, right: AppSpacing.m, bottom: AppSpacing.m),
             sliver: SliverToBoxAdapter(
-              child: Text('Profil', style: AppTypography.h1.copyWith(color: colors.textMain)),
+              child: Text(context.l10n.profileTitle, style: AppTypography.h1.copyWith(color: colors.textMain)),
             ),
           ),
           const SliverPadding(

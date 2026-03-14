@@ -6,6 +6,7 @@ import '../../domain/repositories/splash_repository.dart';
 
 class SplashRepositoryImpl implements SplashRepository {
   static const _onboardingCompleteKey = 'onboarding_complete';
+  static const _authTokenKey = 'auth_token';
 
   @override
   Future<Result<bool, Failure>> checkInitialData() async {
@@ -27,5 +28,11 @@ class SplashRepositoryImpl implements SplashRepository {
   Future<void> setOnboardingCompleted() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_onboardingCompleteKey, true);
+  }
+
+  @override
+  Future<bool> isUserLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_authTokenKey) != null;
   }
 }

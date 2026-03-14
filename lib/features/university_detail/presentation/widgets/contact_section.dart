@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/locale/l10n_extension.dart';
 import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -14,11 +15,12 @@ class ContactSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
+    final t = context.l10n;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('İletişim', style: AppTypography.h3.copyWith(color: colors.textMain)),
+        Text(t.contactTitle, style: AppTypography.h3.copyWith(color: colors.textMain)),
         const SizedBox(height: AppSpacing.s),
         Container(
           decoration: BoxDecoration(
@@ -29,25 +31,25 @@ class ContactSection extends StatelessWidget {
             children: [
               _ContactTile(
                 icon: Icons.language_rounded,
-                label: 'Web Sitesi',
+                label: t.contactWebsite,
                 value: detail.website,
               ),
               Divider(height: 1, indent: 56, color: colors.divider),
               _ContactTile(
                 icon: Icons.alternate_email_rounded,
-                label: 'E-posta',
+                label: t.contactEmail,
                 value: detail.email,
               ),
               Divider(height: 1, indent: 56, color: colors.divider),
               _ContactTile(
                 icon: Icons.phone_rounded,
-                label: 'Telefon',
+                label: t.contactPhone,
                 value: detail.phone,
               ),
               Divider(height: 1, indent: 56, color: colors.divider),
               _ContactTile(
                 icon: Icons.map_rounded,
-                label: 'Adres',
+                label: t.contactAddress,
                 value: detail.address,
               ),
             ],

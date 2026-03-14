@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../app/di/injector.dart';
+import '../../../../../core/locale/l10n_extension.dart';
 import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
@@ -29,6 +30,7 @@ class ForumDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
+    final t = context.l10n;
 
     return BlocProvider(
       create: (context) => getIt<ForumDetailBloc>()..add(LoadForumReplies(topic.id)),
@@ -41,7 +43,7 @@ class ForumDetailPage extends StatelessWidget {
             onPressed: () => context.pop(),
           ),
           title: Text(
-            'Konu Detayı',
+            t.forumTopicDetail,
             style: AppTypography.h3.copyWith(fontSize: 18, color: colors.textMain),
           ),
           centerTitle: true,
@@ -199,7 +201,7 @@ class ForumDetailPage extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(AppSpacing.l, AppSpacing.m, AppSpacing.l, AppSpacing.s),
                       child: Text(
-                        'Yanıtlar',
+                        t.forumReplies,
                         style: AppTypography.h3.copyWith(fontSize: 16, color: colors.textMain),
                       ),
                     ),
@@ -211,7 +213,7 @@ class ForumDetailPage extends StatelessWidget {
                         padding: const EdgeInsets.all(AppSpacing.xl),
                         child: Center(
                           child: Text(
-                            'Henüz yanıt yok. İlk yanıtlayan sen ol!',
+                            t.forumNoReplies,
                             style: AppTypography.bodyMd.copyWith(color: colors.textSubtle),
                           ),
                         ),
@@ -242,7 +244,7 @@ class ForumDetailPage extends StatelessWidget {
           backgroundColor: colors.primary,
           icon: const Icon(Icons.reply_rounded, color: Colors.white),
           label: Text(
-            'Yanıt Yaz',
+            t.forumWriteReply,
             style: AppTypography.bodyMd.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           elevation: 4,

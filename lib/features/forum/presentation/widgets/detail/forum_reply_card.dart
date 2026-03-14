@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/locale/l10n_extension.dart';
 import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_radius.dart';
 import '../../../../../core/theme/app_spacing.dart';
@@ -18,6 +19,7 @@ class ForumReplyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
+    final t = context.l10n;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.m, vertical: AppSpacing.xs),
@@ -59,7 +61,7 @@ class ForumReplyCard extends StatelessWidget {
                 ),
               ),
               Text(
-                _formatTimeAgo(reply.createdAt),
+                _formatTimeAgo(context, reply.createdAt),
                 style: AppTypography.caption.copyWith(color: colors.textSubtle),
               ),
             ],
@@ -119,7 +121,7 @@ class ForumReplyCard extends StatelessWidget {
                       ),
                       const SizedBox(width: AppSpacing.xs),
                       Text(
-                        'Yanıtla',
+                        t.forumReply,
                         style: AppTypography.caption.copyWith(
                           color: colors.textSubtle,
                           fontWeight: FontWeight.w600,
@@ -136,14 +138,15 @@ class ForumReplyCard extends StatelessWidget {
     );
   }
 
-  String _formatTimeAgo(DateTime date) {
+  String _formatTimeAgo(BuildContext context, DateTime date) {
     final difference = DateTime.now().difference(date);
+    final t = context.l10n;
     if (difference.inMinutes < 60) {
-      return '${difference.inMinutes}d';
+      return t.timeMinutesShort(difference.inMinutes);
     } else if (difference.inHours < 24) {
-      return '${difference.inHours}s';
+      return t.timeHoursShort(difference.inHours);
     } else {
-      return '${difference.inDays}g';
+      return t.timeDaysShort(difference.inDays);
     }
   }
 }

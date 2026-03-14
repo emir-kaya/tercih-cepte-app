@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/locale/l10n_extension.dart';
 import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_radius.dart';
 import '../../../../../core/theme/app_spacing.dart';
@@ -17,19 +18,20 @@ class HomeDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
+    final t = context.l10n;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Sisteme Bakış', style: AppTypography.h3),
+          Text(t.homeSystemOverview, style: AppTypography.h3.copyWith(color: colors.textMain)),
           const SizedBox(height: AppSpacing.m),
           Row(
             children: [
               Expanded(
                 child: _DashboardCard(
-                  title: 'Üniversite',
+                  title: t.homeUniversity,
                   value: stats.totalUniversities.toString(),
                   icon: Icons.account_balance_rounded,
                   gradientColors: [
@@ -41,7 +43,7 @@ class HomeDashboard extends StatelessWidget {
               const SizedBox(width: AppSpacing.m),
               Expanded(
                 child: _DashboardCard(
-                  title: 'Bölüm',
+                  title: t.homeDepartment,
                   value: stats.totalDepartments.toString(),
                   icon: Icons.menu_book_rounded,
                   gradientColors: [

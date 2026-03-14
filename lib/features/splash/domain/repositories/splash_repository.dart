@@ -5,4 +5,5 @@ abstract class SplashRepository {
   Future<Result<bool, Failure>> checkInitialData();
   Future<bool> isOnboardingCompleted();
   Future<void> setOnboardingCompleted();
+  Future<bool> isUserLoggedIn();
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/locale/l10n_extension.dart';
 import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -40,7 +41,7 @@ class OnboardBottomBar extends StatelessWidget {
         TextButton(
           onPressed: onSkip,
           child: Text(
-            'Atla',
+            context.l10n.onboardSkip,
             style: AppTypography.bodyMd.copyWith(
               color: colors.textSubtle,
               fontWeight: FontWeight.w500,
@@ -103,7 +104,7 @@ class OnboardBottomBar extends StatelessWidget {
             onTap: onGetStarted,
             child: Center(
               child: Text(
-                'Başlayalım',
+                context.l10n.onboardGetStarted,
                 style: AppTypography.bodyLg.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

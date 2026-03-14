@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../app/router/route_paths.dart';
+import '../../../../../core/locale/l10n_extension.dart';
 import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
@@ -21,13 +22,14 @@ class HomeFeaturedUniversities extends StatelessWidget {
     if (universities.isEmpty) return const SizedBox.shrink();
 
     final colors = context.appColors;
+    final t = context.l10n;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
-          child: Text('Öne Çıkan Üniversiteler', style: AppTypography.h3.copyWith(color: colors.textMain)),
+          child: Text(t.homeFeaturedUniversities, style: AppTypography.h3.copyWith(color: colors.textMain)),
         ),
         const SizedBox(height: AppSpacing.m),
         SizedBox(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../locale/l10n_extension.dart';
 import '../../theme/app_colors_extension.dart';
 import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
@@ -33,7 +34,7 @@ class ErrorState extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.m),
             Text(
-              'Bir Hata Oluştu',
+              context.l10n.errorTitle,
               style: AppTypography.h3.copyWith(color: colors.textMain),
               textAlign: TextAlign.center,
             ),
@@ -45,7 +46,7 @@ class ErrorState extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.l),
             AppButton(
-              text: 'Tekrar Dene',
+              text: context.l10n.retry,
               onPressed: onRetry,
               icon: const Icon(Icons.refresh_rounded),
             ),

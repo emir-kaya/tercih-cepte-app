@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../core/locale/l10n_extension.dart';
 import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_radius.dart';
 import '../../../../../core/theme/app_spacing.dart';
@@ -77,6 +78,7 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
     final colors = context.appColors;
+    final t = context.l10n;
 
     return Scaffold(
       backgroundColor: colors.background,
@@ -89,7 +91,7 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
           onPressed: () => context.pop(),
         ),
         title: Text(
-          'Yeni Konu',
+          t.forumNewTopic,
           style: AppTypography.h3.copyWith(fontSize: 18, color: colors.textMain),
         ),
         centerTitle: true,
@@ -107,7 +109,7 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
               ),
               children: [
                 // Title
-                _buildLabel('Başlık', colors),
+                _buildLabel(t.forumCreateTitle, colors),
                 const SizedBox(height: AppSpacing.xs),
                 _buildInputContainer(
                   colors: colors,
@@ -120,7 +122,7 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                     maxLength: 100,
                     onChanged: (_) => setState(() {}),
                     decoration: InputDecoration(
-                      hintText: 'Konunun başlığını yazın...',
+                      hintText: t.forumCreateTitleHint,
                       hintStyle: AppTypography.bodyLg.copyWith(
                         color: colors.textSubtle.withValues(alpha: 0.6),
                       ),
@@ -149,7 +151,7 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                 const SizedBox(height: AppSpacing.l),
 
                 // University
-                _buildLabel('Üniversite', colors),
+                _buildLabel(t.forumCreateUniversity, colors),
                 const SizedBox(height: AppSpacing.xs),
                 _buildInputContainer(
                   colors: colors,
@@ -164,7 +166,7 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                             Icon(Icons.school_outlined, size: 20, color: colors.textSubtle),
                             const SizedBox(width: AppSpacing.s),
                             Text(
-                              'Üniversite seçin',
+                              t.forumCreateUniversityHint,
                               style: AppTypography.bodyMd.copyWith(
                                 color: colors.textSubtle.withValues(alpha: 0.6),
                               ),
@@ -195,7 +197,7 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                 const SizedBox(height: AppSpacing.l),
 
                 // Content
-                _buildLabel('İçerik', colors),
+                _buildLabel(t.forumCreateContent, colors),
                 const SizedBox(height: AppSpacing.xs),
                 _buildInputContainer(
                   colors: colors,
@@ -208,7 +210,7 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                     textAlignVertical: TextAlignVertical.top,
                     onChanged: (_) => setState(() {}),
                     decoration: InputDecoration(
-                      hintText: 'Düşüncelerinizi, sorularınızı detaylı bir şekilde yazın...',
+                      hintText: t.forumCreateContentHint,
                       hintStyle: AppTypography.bodyMd.copyWith(
                         color: colors.textSubtle.withValues(alpha: 0.6),
                         height: 1.5,
@@ -236,10 +238,10 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                 // Tags
                 Row(
                   children: [
-                    _buildLabel('Etiketler', colors),
+                    _buildLabel(t.forumCreateTags, colors),
                     const SizedBox(width: AppSpacing.xs),
                     Text(
-                      '(isteğe bağlı, en fazla 5)',
+                      t.forumCreateTagsHelper,
                       style: AppTypography.caption.copyWith(
                         color: colors.textSubtle.withValues(alpha: 0.5),
                       ),
@@ -255,7 +257,7 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                     textInputAction: TextInputAction.done,
                     onSubmitted: (_) => _addTag(),
                     decoration: InputDecoration(
-                      hintText: 'Etiket yazın...',
+                      hintText: t.forumCreateTagHint,
                       hintStyle: AppTypography.bodyMd.copyWith(
                         color: colors.textSubtle.withValues(alpha: 0.6),
                       ),
@@ -389,7 +391,7 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
                     onTap: _isFormValid ? _submitTopic : null,
                     child: Center(
                       child: Text(
-                        'Konuyu Paylaş',
+                        t.forumShareTopic,
                         style: AppTypography.bodyLg.copyWith(
                           color: _isFormValid ? Colors.white : colors.textSubtle,
                           fontWeight: FontWeight.bold,

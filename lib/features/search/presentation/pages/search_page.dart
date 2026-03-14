@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/locale/l10n_extension.dart';
 import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
@@ -40,6 +41,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
+    final t = context.l10n;
 
     return AppScaffold(
       appBar: AppBar(
@@ -55,7 +57,7 @@ class _SearchPageState extends State<SearchPage> {
           child: AppTextField(
             controller: _searchController,
             focusNode: _searchFocusNode,
-            hintText: 'Üniversite, bölüm, ders ara...',
+            hintText: t.searchHint,
             prefixIcon: Icon(Icons.search_rounded, color: colors.textSubtle),
             suffixIcon: IconButton(
               icon: Icon(Icons.close_rounded, color: colors.textSubtle),
@@ -73,7 +75,7 @@ class _SearchPageState extends State<SearchPage> {
           children: [
             const SizedBox(height: AppSpacing.m),
             Text(
-              'Son Aramalar',
+              t.searchTitle,
               style: AppTypography.h3.copyWith(fontSize: 16, color: colors.textMain),
             ),
             const SizedBox(height: AppSpacing.m),

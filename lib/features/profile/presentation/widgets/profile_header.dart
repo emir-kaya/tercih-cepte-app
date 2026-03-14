@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/locale/l10n_extension.dart';
 import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -51,12 +52,12 @@ class ProfileHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Emir Kaya',
+                  context.l10n.profileName,
                   style: AppTypography.h3.copyWith(color: colors.textMain),
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
-                  '12. Sınıf Öğrencisi',
+                  context.l10n.profileRole,
                   style: AppTypography.bodyMd.copyWith(color: colors.textSubtle),
                 ),
               ],

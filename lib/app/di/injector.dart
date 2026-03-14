@@ -14,6 +14,7 @@ Future<void> initDependencies() async {
 
   // Features
   registerSplashModules();
+  registerAuthModules();
   registerHomeModules();
   registerUniversityDetailModules();
   registerForumModules();

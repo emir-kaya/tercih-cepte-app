@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/locale/l10n_extension.dart';
 import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -14,11 +15,12 @@ class AboutSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
+    final t = context.l10n;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Hakkında', style: AppTypography.h3.copyWith(color: colors.textMain)),
+        Text(t.universityAbout, style: AppTypography.h3.copyWith(color: colors.textMain)),
         const SizedBox(height: AppSpacing.s),
         Container(
           padding: const EdgeInsets.all(AppSpacing.m),
@@ -48,7 +50,7 @@ class AboutSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Rektör',
+                      t.universityRector,
                       style: AppTypography.caption.copyWith(color: colors.textSubtle),
                     ),
                     const SizedBox(height: 2),
@@ -68,7 +70,7 @@ class AboutSection extends StatelessWidget {
             Expanded(
               child: _AboutTile(
                 icon: Icons.domain_rounded,
-                label: 'Fakülte / MYO',
+                label: t.universityFacultyCount,
                 value: detail.facultyCount,
               ),
             ),
@@ -76,7 +78,7 @@ class AboutSection extends StatelessWidget {
             Expanded(
               child: _AboutTile(
                 icon: Icons.menu_book_rounded,
-                label: 'Bölüm / Program',
+                label: t.universityDepartmentCount,
                 value: detail.departmentCount,
               ),
             ),

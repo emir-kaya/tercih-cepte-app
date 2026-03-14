@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/locale/l10n_extension.dart';
 import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -14,12 +15,13 @@ class QuickStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
+    final t = context.l10n;
 
     return Row(
       children: [
         Expanded(
           child: _StatCard(
-            label: 'Fakülte',
+            label: t.universityFaculty,
             value: detail.facultyCount.replaceAll(RegExp(r'[^0-9]'), ''),
             gradient: [colors.primary, colors.primaryDark],
           ),
@@ -27,7 +29,7 @@ class QuickStats extends StatelessWidget {
         const SizedBox(width: AppSpacing.s),
         Expanded(
           child: _StatCard(
-            label: 'Bölüm',
+            label: t.universityDepartment,
             value: detail.departmentCount.replaceAll(RegExp(r'[^0-9]'), ''),
             gradient: [colors.info, const Color(0xFF1D4ED8)],
           ),
@@ -35,7 +37,7 @@ class QuickStats extends StatelessWidget {
         const SizedBox(width: AppSpacing.s),
         Expanded(
           child: _StatCard(
-            label: 'Kuruluş',
+            label: t.universityEstablished,
             value: detail.foundedYear.toString(),
             gradient: [colors.accent, colors.accentDark],
           ),

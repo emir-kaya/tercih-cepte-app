@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../app/router/route_paths.dart';
+import '../../../../core/locale/l10n_extension.dart';
 import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -17,12 +18,13 @@ class ForumTopicCard extends StatelessWidget {
     required this.topic,
   });
 
-  String _formatDate(DateTime date) {
+  String _formatDate(BuildContext context, DateTime date) {
     final difference = DateTime.now().difference(date);
+    final t = context.l10n;
     if (difference.inMinutes < 60) {
-      return '${difference.inMinutes}d önce';
+      return t.timeMinutesAgo(difference.inMinutes);
     } else if (difference.inHours < 24) {
-      return '${difference.inHours}sa önce';
+      return t.timeHoursAgo(difference.inHours);
     } else {
       return DateFormat('d MMM', 'tr_TR').format(date);
     }
@@ -56,7 +58,7 @@ class ForumTopicCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Author row
-                _buildAuthorRow(colors, roleColor),
+                _buildAuthorRow(context, colors, roleColor),
                 const SizedBox(height: AppSpacing.s),
 
                 // Title
@@ -106,7 +108,7 @@ class ForumTopicCard extends StatelessWidget {
     );
   }
 
-  Widget _buildAuthorRow(AppColorsExtension colors, Color roleColor) {
+  Widget _buildAuthorRow(BuildContext context, AppColorsExtension colors, Color roleColor) {
     return Row(
       children: [
         // Avatar with gradient border
@@ -165,7 +167,7 @@ class ForumTopicCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppRadius.sm),
           ),
           child: Text(
-            _formatDate(topic.lastActivityDate),
+            _formatDate(context, topic.lastActivityDate),
             style: AppTypography.caption.copyWith(
               color: colors.textSubtle,
               fontSize: 10,

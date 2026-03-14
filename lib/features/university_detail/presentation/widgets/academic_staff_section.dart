@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/locale/l10n_extension.dart';
 import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -14,13 +15,14 @@ class AcademicStaffSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
+    final t = context.l10n;
 
     final items = [
-      _AcademicItem('Profesör', staff.professor, Icons.star_rounded, [colors.warning, const Color(0xFFD97706)]),
-      _AcademicItem('Doçent', staff.associateProfessor, Icons.workspace_premium_rounded, [colors.primary, colors.primaryDark]),
-      _AcademicItem('Doktor', staff.doctor, Icons.school_rounded, [colors.accent, colors.accentDark]),
-      _AcademicItem('Ar. Gör.', staff.researchAssistant, Icons.science_rounded, [colors.info, const Color(0xFF1D4ED8)]),
-      _AcademicItem('Öğr. Gör.', staff.lecturer, Icons.record_voice_over_rounded, [colors.success, const Color(0xFF16A34A)]),
+      _AcademicItem(t.academicProfessor, staff.professor, Icons.star_rounded, [colors.warning, const Color(0xFFD97706)]),
+      _AcademicItem(t.academicAssocProf, staff.associateProfessor, Icons.workspace_premium_rounded, [colors.primary, colors.primaryDark]),
+      _AcademicItem(t.academicDoctor, staff.doctor, Icons.school_rounded, [colors.accent, colors.accentDark]),
+      _AcademicItem(t.academicResearchAsst, staff.researchAssistant, Icons.science_rounded, [colors.info, const Color(0xFF1D4ED8)]),
+      _AcademicItem(t.academicLecturer, staff.lecturer, Icons.record_voice_over_rounded, [colors.success, const Color(0xFF16A34A)]),
     ];
 
     final total = staff.professor + staff.associateProfessor + staff.doctor + staff.researchAssistant + staff.lecturer;
@@ -32,7 +34,7 @@ class AcademicStaffSection extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
           child: Row(
             children: [
-              Text('Akademik Kadro', style: AppTypography.h3.copyWith(color: colors.textMain)),
+              Text(t.academicStaff, style: AppTypography.h3.copyWith(color: colors.textMain)),
               const Spacer(),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -41,7 +43,7 @@ class AcademicStaffSection extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  'Toplam $total',
+                  t.academicTotal(total.toString()),
                   style: AppTypography.label.copyWith(color: colors.primaryLight),
                 ),
               ),

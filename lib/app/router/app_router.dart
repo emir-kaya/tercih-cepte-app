@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/auth/presentation/pages/auth_page.dart';
 import '../../features/forum/domain/entities/forum_topic.dart';
 import '../../features/forum/presentation/pages/create/forum_create_topic_page.dart';
 import '../../features/forum/presentation/pages/detail/forum_detail_page.dart';
@@ -33,6 +34,10 @@ class AppRouter {
       GoRoute(
         path: RoutePaths.onboard,
         builder: (context, state) => const OnboardPage(),
+      ),
+      GoRoute(
+        path: RoutePaths.auth,
+        builder: (context, state) => const AuthPage(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {

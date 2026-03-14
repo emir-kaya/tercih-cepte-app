@@ -34,12 +34,8 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
             message: 'Uygulamanın yeni bir sürümü mevcut. Lütfen güncelleyin.',
           ));
         } else {
-          final onboardingDone = await _checkInitialData.isOnboardingCompleted();
-          if (onboardingDone) {
-            emit(const SplashNavigationReady(target: SplashNavigationTarget.home));
-          } else {
-            emit(const SplashNavigationReady(target: SplashNavigationTarget.onboard));
-          }
+          // TODO: Onboard kontrolünü sonra aktif et
+          emit(const SplashNavigationReady(target: SplashNavigationTarget.onboard));
         }
     }
   }

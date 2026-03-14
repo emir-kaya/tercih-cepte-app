@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/di/injector.dart';
 import '../../../../app/router/route_paths.dart';
+import '../../../../core/locale/l10n_extension.dart';
 import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/theme_cubit.dart';
 import '../bloc/splash_bloc.dart';
@@ -129,9 +130,9 @@ class _SplashPageState extends State<SplashPage>
     switch (target) {
       case SplashNavigationTarget.onboard:
         context.go(RoutePaths.onboard);
+      case SplashNavigationTarget.login:
+        context.go(RoutePaths.auth);
       case SplashNavigationTarget.home:
-        context.go(RoutePaths.home);
-      default:
         context.go(RoutePaths.home);
     }
   }
@@ -332,9 +333,9 @@ class _SplashPageState extends State<SplashPage>
                         colors.accent,
                       ],
               ).createShader(bounds),
-              child: const Text(
-                'TERCİH CEPTE',
-                style: TextStyle(
+              child: Text(
+                context.l10n.splashTitle,
+                style: const TextStyle(
                   fontSize: 34,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 3,
@@ -354,7 +355,7 @@ class _SplashPageState extends State<SplashPage>
     return FadeTransition(
       opacity: _subtitleFade,
       child: Text(
-        'Geleceğine hazır mısın?',
+        context.l10n.splashSubtitle,
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
@@ -376,7 +377,7 @@ class _SplashPageState extends State<SplashPage>
           const _DotLoader(),
           const SizedBox(height: 16),
           Text(
-            'Üniversite yolculuğunuzda yanınızdayız',
+            context.l10n.splashBottomText,
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w400,
