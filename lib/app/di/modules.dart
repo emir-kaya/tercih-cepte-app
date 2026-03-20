@@ -1,4 +1,5 @@
 // Auth
+import '../../features/auth/data/datasources/auth_firebase_datasource.dart';
 import '../../features/auth/data/datasources/auth_local_datasource.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
@@ -10,11 +11,16 @@ import '../../features/auth/domain/usecases/register_user.dart';
 import '../../features/auth/presentation/bloc/login/login_bloc.dart';
 import '../../features/auth/presentation/bloc/register/register_bloc.dart';
 // Forum
-import '../../features/forum/data/datasources/forum_local_datasource.dart';
+import '../../features/forum/data/datasources/forum_firebase_datasource.dart';
 import '../../features/forum/data/repositories/forum_repository_impl.dart';
 import '../../features/forum/domain/repositories/forum_repository.dart';
+import '../../features/forum/domain/usecases/add_forum_reply.dart';
+import '../../features/forum/domain/usecases/create_forum_topic.dart';
 import '../../features/forum/domain/usecases/get_forum_replies.dart';
 import '../../features/forum/domain/usecases/get_forum_topics.dart';
+import '../../features/forum/domain/usecases/toggle_reply_like.dart';
+import '../../features/forum/domain/usecases/toggle_topic_like.dart';
+import '../../features/forum/domain/usecases/toggle_topic_save.dart';
 import '../../features/forum/presentation/bloc/detail/forum_detail_bloc.dart';
 import '../../features/forum/presentation/bloc/forum_bloc.dart';
 import '../../features/home/data/datasources/home_local_datasource.dart';
@@ -23,7 +29,6 @@ import '../../features/home/domain/repositories/home_repository.dart';
 import '../../features/home/domain/usecases/get_home_overview.dart';
 import '../../features/home/presentation/bloc/home_bloc.dart';
 // Profile
-import '../../features/profile/data/datasources/profile_local_datasource.dart';
 import '../../features/profile/data/repositories/profile_repository_impl.dart';
 import '../../features/profile/domain/repositories/profile_repository.dart';
 import '../../features/profile/presentation/bloc/profile_bloc.dart';
@@ -65,20 +70,38 @@ void registerHomeModules() {
 
 void registerForumModules() {
   // Data Sources
-  getIt.registerLazySingleton<ForumLocalDataSource>(() => ForumLocalDataSource());
-  
+  getIt.registerLazySingleton<ForumFirebaseDataSource>(
+    () => ForumFirebaseDataSource(),
+  );
+
   // Repositories
   getIt.registerLazySingleton<ForumRepository>(
-    () => ForumRepositoryImpl(localDataSource: getIt()),
+    () => ForumRepositoryImpl(firebaseDataSource: getIt()),
   );
-  
+
   // Use Cases
   getIt.registerLazySingleton(() => GetForumTopics(getIt()));
   getIt.registerLazySingleton(() => GetForumReplies(getIt()));
-  
+  getIt.registerLazySingleton(() => CreateForumTopic(getIt()));
+  getIt.registerLazySingleton(() => AddForumReply(getIt()));
+  getIt.registerLazySingleton(() => ToggleTopicLike(getIt()));
+  getIt.registerLazySingleton(() => ToggleTopicSave(getIt()));
+  getIt.registerLazySingleton(() => ToggleReplyLike(getIt()));
+
   // BLoC
-  getIt.registerFactory(() => ForumBloc(getIt()));
-  getIt.registerFactory(() => ForumDetailBloc(getIt()));
+  getIt.registerFactory(() => ForumBloc(
+    getForumTopics: getIt(),
+    createForumTopic: getIt(),
+  ));
+  getIt.registerFactory(() => ForumDetailBloc(
+    getForumReplies: getIt(),
+    addForumReply: getIt(),
+    toggleTopicLike: getIt(),
+    toggleTopicSave: getIt(),
+    toggleReplyLike: getIt(),
+    repository: getIt(),
+    firebaseDataSource: getIt(),
+  ));
 }
 
 void registerUniversityDetailModules() {
@@ -101,11 +124,17 @@ void registerUniversityDetailModules() {
 
 void registerAuthModules() {
   // Data Sources
+  getIt.registerLazySingleton<AuthFirebaseDataSource>(
+    () => AuthFirebaseDataSource(),
+  );
   getIt.registerLazySingleton<AuthLocalDataSource>(() => AuthLocalDataSource());
 
   // Repositories
   getIt.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(localDataSource: getIt()),
+    () => AuthRepositoryImpl(
+      firebaseDataSource: getIt(),
+      localDataSource: getIt(),
+    ),
   );
 
   // Use Cases
@@ -125,14 +154,11 @@ void registerAuthModules() {
 }
 
 void registerProfileModules() {
-  // Data Sources
-  getIt.registerLazySingleton<ProfileLocalDataSource>(() => ProfileLocalDataSource());
-  
   // Repositories
   getIt.registerLazySingleton<ProfileRepository>(
-    () => ProfileRepositoryImpl(),
+    () => ProfileRepositoryImpl(firebaseDataSource: getIt()),
   );
-  
+
   // BLoC
   getIt.registerFactory(() => ProfileBloc(getIt()));
 }

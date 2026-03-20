@@ -7,11 +7,19 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ProfileRepository _repository;
 
   ProfileBloc(this._repository) : super(ProfileInitial()) {
-    on<LoadProfileData>((event, emit) async {
-      emit(ProfileLoading());
-      // Placeholder load
-      await Future.delayed(const Duration(milliseconds: 500));
-      emit(ProfileLoaded());
-    });
+    on<LoadProfileData>(_onLoadProfile);
+  }
+
+  Future<void> _onLoadProfile(
+    LoadProfileData event,
+    Emitter<ProfileState> emit,
+  ) async {
+    emit(ProfileLoading());
+    try {
+      final user = await _repository.getCurrentUserProfile();
+      emit(ProfileLoaded(user));
+    } catch (e) {
+      emit(const ProfileError('Profil yüklenirken bir hata oluştu'));
+    }
   }
 }

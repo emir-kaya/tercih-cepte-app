@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -9,6 +10,9 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../domain/entities/forum_topic.dart';
+import '../bloc/forum_bloc.dart';
+import '../bloc/forum_event.dart';
+import '../utils/forum_role_helper.dart';
 
 class ForumTopicCard extends StatelessWidget {
   final ForumTopic topic;
@@ -33,7 +37,8 @@ class ForumTopicCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
-    final roleColor = topic.authorRole == 'Öğrenci' ? colors.success : colors.info;
+    final displayRole = localizeRole(context, topic.authorRole);
+    final roleColor = topic.authorRole == 'university' ? colors.success : colors.info;
 
     return Container(
       margin: const EdgeInsets.only(bottom: AppSpacing.s),
@@ -46,11 +51,14 @@ class ForumTopicCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          onTap: () {
-            context.go(
+          onTap: () async {
+            await context.push(
               '${RoutePaths.forum}/${RoutePaths.forumDetail}',
               extra: topic,
             );
+            if (context.mounted) {
+              context.read<ForumBloc>().add(RefreshForumData());
+            }
           },
           child: Padding(
             padding: const EdgeInsets.all(AppSpacing.m),
@@ -58,7 +66,7 @@ class ForumTopicCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Author row
-                _buildAuthorRow(context, colors, roleColor),
+                _buildAuthorRow(context, colors, roleColor, displayRole),
                 const SizedBox(height: AppSpacing.s),
 
                 // Title
@@ -108,7 +116,7 @@ class ForumTopicCard extends StatelessWidget {
     );
   }
 
-  Widget _buildAuthorRow(BuildContext context, AppColorsExtension colors, Color roleColor) {
+  Widget _buildAuthorRow(BuildContext context, AppColorsExtension colors, Color roleColor, String displayRole) {
     return Row(
       children: [
         // Avatar with gradient border
@@ -148,12 +156,8 @@ class ForumTopicCard extends StatelessWidget {
                 ),
               ),
               Text(
-                topic.authorRole,
-                style: AppTypography.caption.copyWith(
-                  color: roleColor,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 10,
-                ),
+                displayRole,
+                style: AppTypography.caption.copyWith(color: roleColor, fontWeight: FontWeight.w500, fontSize: 10),
               ),
             ],
           ),

@@ -12,6 +12,7 @@ class ForumTopicModel extends ForumTopic {
     required super.viewCount,
     required super.lastActivityDate,
     required super.tags,
+    super.likeCount = 0,
     super.isLiked = false,
     super.isSaved = false,
   });

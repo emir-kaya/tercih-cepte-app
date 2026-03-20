@@ -1,3 +1,5 @@
+import '../../../auth/domain/entities/user.dart';
+
 abstract class ProfileRepository {
-  // Placeholder repository methods
+  Future<User> getCurrentUserProfile();
 }

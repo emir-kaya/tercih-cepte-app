@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,6 +16,10 @@ class HomeHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.appColors;
     final t = context.l10n;
+    final user = FirebaseAuth.instance.currentUser;
+    final fullName = user?.displayName ?? '';
+    final firstName = fullName.split(' ').first;
+    final initials = _getInitials(fullName);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m, vertical: AppSpacing.s),
@@ -27,7 +32,10 @@ class HomeHeader extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(t.homeGreeting('Emir'), style: AppTypography.h3.copyWith(color: colors.textMain)),
+                  Text(
+                    t.homeGreeting(firstName.isNotEmpty ? firstName : 'Misafir'),
+                    style: AppTypography.h3.copyWith(color: colors.textMain),
+                  ),
                   const SizedBox(height: AppSpacing.xs),
                   Text(
                     t.homeSubtitle,
@@ -37,8 +45,16 @@ class HomeHeader extends StatelessWidget {
               ),
               CircleAvatar(
                 radius: 24,
-                backgroundColor: colors.surfaceVariant,
-                child: Icon(Icons.person_outline, color: colors.textMain),
+                backgroundColor: colors.primary.withValues(alpha: 0.15),
+                child: initials.isNotEmpty
+                    ? Text(
+                        initials,
+                        style: AppTypography.bodyLg.copyWith(
+                          color: colors.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      )
+                    : Icon(Icons.person_outline, color: colors.textMain),
               ),
             ],
           ),
@@ -57,5 +73,15 @@ class HomeHeader extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getInitials(String fullName) {
+    final parts = fullName.trim().split(' ');
+    if (parts.length >= 2) {
+      return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
+    } else if (parts.isNotEmpty && parts.first.isNotEmpty) {
+      return parts.first[0].toUpperCase();
+    }
+    return '';
   }
 }

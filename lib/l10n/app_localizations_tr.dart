@@ -436,4 +436,20 @@ class L10nTr extends L10n {
 
   @override
   String get authGuestLogin => 'Misafir olarak devam et';
+
+  @override
+  String get settingsLogoutConfirm =>
+      'Hesabınızdan çıkış yapmak istediğinize emin misiniz?';
+
+  @override
+  String get settingsCancel => 'İptal';
+
+  @override
+  String get forumLike => 'Beğen';
+
+  @override
+  String get roleUser => 'Kullanıcı';
+
+  @override
+  String get roleAnonymous => 'Anonim';
 }

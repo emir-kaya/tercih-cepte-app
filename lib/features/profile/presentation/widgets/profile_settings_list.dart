@@ -151,10 +151,7 @@ class _ProfileSettingsListState extends State<ProfileSettingsList> {
                 icon: Icons.logout_rounded,
                 titleColor: colors.error,
                 iconColor: colors.error,
-                onTap: () async {
-                  await getIt<AuthRepository>().logout();
-                  if (context.mounted) context.go(RoutePaths.auth);
-                },
+                onTap: () => _showLogoutDialog(context),
               ),
             ],
           ),
@@ -252,6 +249,67 @@ class _ProfileSettingsListState extends State<ProfileSettingsList> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    final colors = context.appColors;
+    final t = context.l10n;
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        backgroundColor: colors.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+        ),
+        title: Text(
+          t.settingsLogout,
+          style: AppTypography.h3.copyWith(color: colors.textMain),
+        ),
+        content: Text(
+          t.settingsLogoutConfirm,
+          style: AppTypography.bodyMd.copyWith(color: colors.textSubtle),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(
+              t.settingsCancel,
+              style: AppTypography.bodyMd.copyWith(color: colors.textSubtle),
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(dialogContext).pop();
+              try {
+                await getIt<AuthRepository>().logout();
+                if (context.mounted) context.go(RoutePaths.auth);
+              } catch (_) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('Çıkış yapılırken bir hata oluştu'),
+                      backgroundColor: colors.error,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.sm),
+                      ),
+                    ),
+                  );
+                }
+              }
+            },
+            child: Text(
+              t.settingsLogout,
+              style: AppTypography.bodyMd.copyWith(
+                color: colors.error,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -436,4 +436,19 @@ class L10nEn extends L10n {
 
   @override
   String get authGuestLogin => 'Continue as guest';
+
+  @override
+  String get settingsLogoutConfirm => 'Are you sure you want to log out?';
+
+  @override
+  String get settingsCancel => 'Cancel';
+
+  @override
+  String get forumLike => 'Like';
+
+  @override
+  String get roleUser => 'User';
+
+  @override
+  String get roleAnonymous => 'Anonymous';
 }

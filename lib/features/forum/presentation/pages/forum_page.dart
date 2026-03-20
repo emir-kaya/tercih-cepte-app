@@ -157,7 +157,12 @@ class _ForumContentView extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(AppRadius.md),
-          onTap: () => context.go('${RoutePaths.forum}/${RoutePaths.forumCreate}'),
+          onTap: () async {
+                    final result = await context.push<bool>('${RoutePaths.forum}/${RoutePaths.forumCreate}');
+                    if (result == true && context.mounted) {
+                      context.read<ForumBloc>().add(RefreshForumData());
+                    }
+                  },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             child: Row(

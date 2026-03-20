@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/locale/l10n_extension.dart';
 import '../../../../../core/theme/app_colors_extension.dart';
@@ -6,7 +7,9 @@ import '../../../../../core/theme/app_radius.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
 import '../../../domain/entities/forum_reply.dart';
-import 'forum_reply_bottom_sheet.dart';
+import '../../bloc/detail/forum_detail_bloc.dart';
+import '../../utils/forum_role_helper.dart';
+import '../../bloc/detail/forum_detail_event.dart';
 
 class ForumReplyCard extends StatelessWidget {
   final ForumReply reply;
@@ -19,7 +22,6 @@ class ForumReplyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
-    final t = context.l10n;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.m, vertical: AppSpacing.xs),
@@ -54,7 +56,7 @@ class ForumReplyCard extends StatelessWidget {
                       style: AppTypography.bodyMd.copyWith(fontWeight: FontWeight.w600, color: colors.textMain),
                     ),
                     Text(
-                      reply.authorRole,
+                      localizeRole(context, reply.authorRole),
                       style: AppTypography.caption.copyWith(color: colors.textSubtle),
                     ),
                   ],
@@ -78,7 +80,11 @@ class ForumReplyCard extends StatelessWidget {
           Row(
             children: [
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  context.read<ForumDetailBloc>().add(
+                    ToggleReplyLikeRequested(topicId: reply.topicId, replyId: reply.id),
+                  );
+                },
                 borderRadius: BorderRadius.circular(12),
                 child: Padding(
                   padding: const EdgeInsets.all(AppSpacing.xs),
@@ -95,35 +101,6 @@ class ForumReplyCard extends StatelessWidget {
                         '${reply.likeCount}',
                         style: AppTypography.caption.copyWith(
                           color: reply.isLiked ? colors.primary : colors.textSubtle,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: AppSpacing.l),
-              InkWell(
-                onTap: () => ForumReplyBottomSheet.show(
-                  context,
-                  replyingTo: reply.authorName,
-                ),
-                borderRadius: BorderRadius.circular(12),
-                child: Padding(
-                  padding: const EdgeInsets.all(AppSpacing.xs),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.reply_rounded,
-                        size: 16,
-                        color: colors.textSubtle,
-                      ),
-                      const SizedBox(width: AppSpacing.xs),
-                      Text(
-                        t.forumReply,
-                        style: AppTypography.caption.copyWith(
-                          color: colors.textSubtle,
                           fontWeight: FontWeight.w600,
                         ),
                       ),

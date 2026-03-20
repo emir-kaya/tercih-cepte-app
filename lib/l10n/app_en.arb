@@ -151,5 +151,13 @@
   "authPasswordTooShort": "Password must be at least 6 characters",
   "authPasswordsNotMatch": "Passwords do not match",
   "authOrDivider": "or",
-  "authGuestLogin": "Continue as guest"
+  "authGuestLogin": "Continue as guest",
+
+  "settingsLogoutConfirm": "Are you sure you want to log out?",
+  "settingsCancel": "Cancel",
+
+  "forumLike": "Like",
+
+  "roleUser": "User",
+  "roleAnonymous": "Anonymous"
 }

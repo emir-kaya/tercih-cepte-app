@@ -15,7 +15,6 @@ import '../../bloc/detail/forum_detail_bloc.dart';
 import '../../bloc/detail/forum_detail_event.dart';
 import '../../bloc/detail/forum_detail_state.dart';
 import '../../widgets/detail/forum_post_card.dart';
-import '../../widgets/detail/forum_reply_bottom_sheet.dart';
 import '../../widgets/detail/forum_reply_card.dart';
 
 class ForumDetailPage extends StatelessWidget {
@@ -187,13 +186,14 @@ class ForumDetailPage extends StatelessWidget {
                 ),
               );
             } else if (state is ForumDetailLoaded) {
+              final currentTopic = state.topic ?? topic;
               return CustomScrollView(
                 physics: const BouncingScrollPhysics(),
                 slivers: [
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m, vertical: AppSpacing.s),
-                      child: ForumPostCard(topic: topic),
+                      child: ForumPostCard(topic: currentTopic),
                     ),
                   ),
 
@@ -238,16 +238,6 @@ class ForumDetailPage extends StatelessWidget {
             }
             return const SizedBox.shrink();
           },
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => ForumReplyBottomSheet.show(context),
-          backgroundColor: colors.primary,
-          icon: const Icon(Icons.reply_rounded, color: Colors.white),
-          label: Text(
-            t.forumWriteReply,
-            style: AppTypography.bodyMd.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          elevation: 4,
         ),
       ),
     );

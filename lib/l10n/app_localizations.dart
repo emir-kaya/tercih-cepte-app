@@ -906,6 +906,36 @@ abstract class L10n {
   /// In tr, this message translates to:
   /// **'Misafir olarak devam et'**
   String get authGuestLogin;
+
+  /// Logout confirmation message
+  ///
+  /// In tr, this message translates to:
+  /// **'Hesabınızdan çıkış yapmak istediğinize emin misiniz?'**
+  String get settingsLogoutConfirm;
+
+  /// Cancel button
+  ///
+  /// In tr, this message translates to:
+  /// **'İptal'**
+  String get settingsCancel;
+
+  /// Like button text
+  ///
+  /// In tr, this message translates to:
+  /// **'Beğen'**
+  String get forumLike;
+
+  /// Default user role
+  ///
+  /// In tr, this message translates to:
+  /// **'Kullanıcı'**
+  String get roleUser;
+
+  /// Anonymous user
+  ///
+  /// In tr, this message translates to:
+  /// **'Anonim'**
+  String get roleAnonymous;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

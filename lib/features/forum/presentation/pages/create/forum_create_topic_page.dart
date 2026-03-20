@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../app/di/injector.dart';
 import '../../../../../core/locale/l10n_extension.dart';
 import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_radius.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
 import '../../../../../core/widgets/app_toast.dart';
+import '../../../domain/repositories/forum_repository.dart';
 
 class ForumCreateTopicPage extends StatefulWidget {
   const ForumCreateTopicPage({super.key});
@@ -62,15 +64,40 @@ class _ForumCreateTopicPageState extends State<ForumCreateTopicPage> {
     setState(() => _tags.remove(tag));
   }
 
-  void _submitTopic() {
-    if (!_isFormValid) return;
+  bool _isSubmitting = false;
 
-    // TODO: Connect to BLoC / use case
-    context.pop();
-    AppToast.show(
-      context,
-      message: 'Konu başarıyla oluşturuldu!',
-      type: AppToastType.success,
+  Future<void> _submitTopic() async {
+    if (!_isFormValid || _isSubmitting) return;
+
+    setState(() => _isSubmitting = true);
+
+    final repository = getIt<ForumRepository>();
+    final result = await repository.createTopic(
+      title: _titleController.text.trim(),
+      content: _contentController.text.trim(),
+      universityName: _selectedUniversity!,
+      tags: _tags,
+    );
+
+    if (!mounted) return;
+
+    result.fold(
+      (failure) {
+        setState(() => _isSubmitting = false);
+        AppToast.show(
+          context,
+          message: failure.message,
+          type: AppToastType.error,
+        );
+      },
+      (_) {
+        context.pop(true);
+        AppToast.show(
+          context,
+          message: 'Konu başarıyla oluşturuldu!',
+          type: AppToastType.success,
+        );
+      },
     );
   }
 

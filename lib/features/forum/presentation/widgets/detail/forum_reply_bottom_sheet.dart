@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/locale/l10n_extension.dart';
 import '../../../../../core/theme/app_colors_extension.dart';
@@ -6,21 +7,29 @@ import '../../../../../core/theme/app_radius.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
 import '../../../../../core/widgets/app_toast.dart';
+import '../../bloc/detail/forum_detail_bloc.dart';
+import '../../bloc/detail/forum_detail_event.dart';
 
 class ForumReplyBottomSheet extends StatefulWidget {
   final String? replyingTo;
+  final String topicId;
 
   const ForumReplyBottomSheet({
     super.key,
     this.replyingTo,
+    required this.topicId,
   });
 
-  static Future<void> show(BuildContext context, {String? replyingTo}) {
+  static Future<void> show(BuildContext context, {String? replyingTo, required String topicId}) {
+    final bloc = context.read<ForumDetailBloc>();
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => ForumReplyBottomSheet(replyingTo: replyingTo),
+      builder: (_) => BlocProvider.value(
+        value: bloc,
+        child: ForumReplyBottomSheet(replyingTo: replyingTo, topicId: topicId),
+      ),
     );
   }
 
@@ -52,7 +61,11 @@ class _ForumReplyBottomSheetState extends State<ForumReplyBottomSheet> {
   void _submit() {
     if (!_hasContent) return;
 
-    // TODO: Connect to BLoC / use case
+    context.read<ForumDetailBloc>().add(AddReplyRequested(
+      topicId: widget.topicId,
+      content: _controller.text.trim(),
+    ));
+
     Navigator.of(context).pop();
     AppToast.show(
       context,

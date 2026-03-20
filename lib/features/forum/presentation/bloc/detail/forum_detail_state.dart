@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../../../domain/entities/forum_reply.dart';
+import '../../../domain/entities/forum_topic.dart';
 
 abstract class ForumDetailState extends Equatable {
   const ForumDetailState();
@@ -18,11 +19,12 @@ class ForumDetailLoading extends ForumDetailState {
 
 class ForumDetailLoaded extends ForumDetailState {
   final List<ForumReply> replies;
+  final ForumTopic? topic;
 
-  const ForumDetailLoaded(this.replies);
+  const ForumDetailLoaded(this.replies, {this.topic});
 
   @override
-  List<Object?> get props => [replies];
+  List<Object?> get props => [replies, topic];
 }
 
 class ForumDetailError extends ForumDetailState {
@@ -32,4 +34,8 @@ class ForumDetailError extends ForumDetailState {
 
   @override
   List<Object?> get props => [message];
+}
+
+class ForumReplyAdded extends ForumDetailState {
+  const ForumReplyAdded();
 }

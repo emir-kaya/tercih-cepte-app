@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/utils/failures.dart';
@@ -6,7 +7,6 @@ import '../../domain/repositories/splash_repository.dart';
 
 class SplashRepositoryImpl implements SplashRepository {
   static const _onboardingCompleteKey = 'onboarding_complete';
-  static const _authTokenKey = 'auth_token';
 
   @override
   Future<Result<bool, Failure>> checkInitialData() async {
@@ -32,7 +32,6 @@ class SplashRepositoryImpl implements SplashRepository {
 
   @override
   Future<bool> isUserLoggedIn() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_authTokenKey) != null;
+    return FirebaseAuth.instance.currentUser != null;
   }
 }

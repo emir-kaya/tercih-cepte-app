@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
 import '../../../../../core/widgets/app_card.dart';
 import '../../../../../core/widgets/app_chip.dart';
 import '../../../domain/entities/forum_topic.dart';
+import '../../bloc/detail/forum_detail_bloc.dart';
+import '../../utils/forum_role_helper.dart';
+import '../../bloc/detail/forum_detail_event.dart';
 import 'forum_action_buttons.dart';
+import 'forum_reply_bottom_sheet.dart';
 
 class ForumPostCard extends StatelessWidget {
   final ForumTopic topic;
@@ -45,7 +50,7 @@ class ForumPostCard extends StatelessWidget {
                       style: AppTypography.bodyMd.copyWith(fontWeight: FontWeight.w600, color: colors.textMain),
                     ),
                     Text(
-                      topic.authorRole,
+                      localizeRole(context, topic.authorRole),
                       style: AppTypography.caption.copyWith(color: colors.textSubtle),
                     ),
                   ],
@@ -96,10 +101,16 @@ class ForumPostCard extends StatelessWidget {
           ForumActionButtons(
             isLiked: topic.isLiked,
             isSaved: topic.isSaved,
-            likeCount: 42, // Mocking a like count based on views
-            onLikePressed: () {},
-            onReplyPressed: () {},
-            onSavePressed: () {},
+            likeCount: topic.likeCount,
+            onLikePressed: () {
+              context.read<ForumDetailBloc>().add(ToggleTopicLikeRequested(topic.id));
+            },
+            onReplyPressed: () {
+              ForumReplyBottomSheet.show(context, topicId: topic.id);
+            },
+            onSavePressed: () {
+              context.read<ForumDetailBloc>().add(ToggleTopicSaveRequested(topic.id));
+            },
             onSharePressed: () {},
           ),
         ],

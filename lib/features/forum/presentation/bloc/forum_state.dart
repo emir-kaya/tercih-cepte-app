@@ -29,3 +29,5 @@ class ForumError extends ForumState {
   @override
   List<Object?> get props => [message];
 }
+
+class ForumTopicCreated extends ForumState {}

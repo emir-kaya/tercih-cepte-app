@@ -34,8 +34,20 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
             message: 'Uygulamanın yeni bir sürümü mevcut. Lütfen güncelleyin.',
           ));
         } else {
-          // TODO: Onboard kontrolünü sonra aktif et
-          emit(const SplashNavigationReady(target: SplashNavigationTarget.onboard));
+          // 1. Onboarding tamamlanmış mı?
+          final onboardingDone = await _checkInitialData.isOnboardingCompleted();
+          if (!onboardingDone) {
+            emit(const SplashNavigationReady(target: SplashNavigationTarget.onboard));
+            return;
+          }
+
+          // 2. Kullanıcı giriş yapmış mı? (Firebase token persist ediyor)
+          final isLoggedIn = await _checkInitialData.isUserLoggedIn();
+          if (isLoggedIn) {
+            emit(const SplashNavigationReady(target: SplashNavigationTarget.home));
+          } else {
+            emit(const SplashNavigationReady(target: SplashNavigationTarget.login));
+          }
         }
     }
   }

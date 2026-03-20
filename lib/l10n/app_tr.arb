@@ -286,5 +286,18 @@
   "authOrDivider": "veya",
   "@authOrDivider": { "description": "Or divider text" },
   "authGuestLogin": "Misafir olarak devam et",
-  "@authGuestLogin": { "description": "Guest login button" }
+  "@authGuestLogin": { "description": "Guest login button" },
+
+  "settingsLogoutConfirm": "Hesabınızdan çıkış yapmak istediğinize emin misiniz?",
+  "@settingsLogoutConfirm": { "description": "Logout confirmation message" },
+  "settingsCancel": "İptal",
+  "@settingsCancel": { "description": "Cancel button" },
+
+  "forumLike": "Beğen",
+  "@forumLike": { "description": "Like button text" },
+
+  "roleUser": "Kullanıcı",
+  "@roleUser": { "description": "Default user role" },
+  "roleAnonymous": "Anonim",
+  "@roleAnonymous": { "description": "Anonymous user" }
 }

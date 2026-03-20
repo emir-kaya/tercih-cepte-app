@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/locale/l10n_extension.dart';
 import '../../../../../core/theme/app_colors_extension.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_typography.dart';
@@ -27,6 +28,7 @@ class ForumActionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
+    final t = context.l10n;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.s),
@@ -37,14 +39,14 @@ class ForumActionButtons extends StatelessWidget {
             children: [
               _buildActionButton(
                 icon: isLiked ? Icons.thumb_up_alt_rounded : Icons.thumb_up_alt_outlined,
-                label: likeCount > 0 ? '$likeCount' : 'Beğen',
+                label: likeCount > 0 ? '$likeCount' : t.forumLike,
                 color: isLiked ? colors.primary : colors.textSubtle,
                 onTap: onLikePressed,
               ),
               const SizedBox(width: AppSpacing.m),
               _buildActionButton(
                 icon: Icons.chat_bubble_outline_rounded,
-                label: 'Yanıtla',
+                label: t.forumReply,
                 color: colors.textSubtle,
                 onTap: onReplyPressed,
               ),

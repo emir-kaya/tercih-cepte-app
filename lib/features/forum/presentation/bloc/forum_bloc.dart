@@ -1,14 +1,22 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../domain/usecases/create_forum_topic.dart';
 import '../../domain/usecases/get_forum_topics.dart';
 import 'forum_event.dart';
 import 'forum_state.dart';
 
 class ForumBloc extends Bloc<ForumEvent, ForumState> {
   final GetForumTopics _getForumTopics;
+  final CreateForumTopic _createForumTopic;
 
-  ForumBloc(this._getForumTopics) : super(ForumInitial()) {
+  ForumBloc({
+    required GetForumTopics getForumTopics,
+    required CreateForumTopic createForumTopic,
+  })  : _getForumTopics = getForumTopics,
+        _createForumTopic = createForumTopic,
+        super(ForumInitial()) {
     on<LoadForumData>(_onLoadForumData);
     on<RefreshForumData>(_onRefreshForumData);
+    on<CreateTopicRequested>(_onCreateTopic);
   }
 
   Future<void> _onLoadForumData(LoadForumData event, Emitter<ForumState> emit) async {
@@ -20,9 +28,26 @@ class ForumBloc extends Bloc<ForumEvent, ForumState> {
     await _fetchData(emit);
   }
 
+  Future<void> _onCreateTopic(CreateTopicRequested event, Emitter<ForumState> emit) async {
+    final result = await _createForumTopic(
+      title: event.title,
+      content: event.content,
+      universityName: event.universityName,
+      tags: event.tags,
+    );
+
+    result.fold(
+      (failure) => emit(ForumError(failure.message)),
+      (_) {
+        emit(ForumTopicCreated());
+        add(LoadForumData());
+      },
+    );
+  }
+
   Future<void> _fetchData(Emitter<ForumState> emit) async {
     final result = await _getForumTopics();
-    
+
     result.fold(
       (failure) => emit(ForumError(failure.message)),
       (topics) => emit(ForumLoaded(topics: topics)),

@@ -11,6 +11,7 @@ class ForumTopic extends Equatable {
   final int viewCount;
   final DateTime lastActivityDate;
   final List<String> tags;
+  final int likeCount;
   final bool isLiked;
   final bool isSaved;
 
@@ -25,6 +26,7 @@ class ForumTopic extends Equatable {
     required this.viewCount,
     required this.lastActivityDate,
     required this.tags,
+    this.likeCount = 0,
     this.isLiked = false,
     this.isSaved = false,
   });
@@ -41,6 +43,7 @@ class ForumTopic extends Equatable {
         viewCount,
         lastActivityDate,
         tags,
+        likeCount,
         isLiked,
         isSaved,
       ];
